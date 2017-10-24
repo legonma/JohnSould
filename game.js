@@ -1,6 +1,6 @@
 window.onload = function() {
     var canvas = document.getElementById('canvas');
-    var elementsDoors = [];
+    var elementsInteract = [];
     
 	function buildBackground(level) {
 		var background = document.createElement('div');
@@ -41,7 +41,7 @@ window.onload = function() {
             width: door.style.width,
             doorOut: doorOut
         }
-        elementsDoors.push(doorObj)
+        elementsInteract.push(doorObj)
 	}
 
     function placeContent(content) {
@@ -58,44 +58,66 @@ window.onload = function() {
     characterController();
 
 	function contentAppearUp() {
-		createElementToLevel('maceta', 46, 70, 'maceta.pngs', -290, -0, 'flex-end')
+		createElementToLevel('maceta', 46, 70, 'maceta.pngs', -290, -0, 'flex-end', false)
 	}
 
 	function contentAppearDown() {
-        createElementToLevel('deskOfficer', 50, 120, '', 320, 0, 'flex-end')
-		createElementToLevel('board', 120, 48, 'board.pngs', 70, -80, 'flex-end')
-		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 60, -3, 'flex-start')
-		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 180, -3, 'flex-start')
+        createElementToLevel('deskOfficer', 50, 120, '', 320, 0, 'flex-end', true)
+		createElementToLevel('board', 120, 48, 'board.pngs', 70, -80, 'flex-end', false)
+		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 60, -3, 'flex-start', false)
+		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 180, -3, 'flex-start', false)
 	}
 
-	function createElementToLevel(element, width, height, img, positionX, positionY, flex) {
+	function createElementToLevel(element, width, height, img, positionX, positionY, flex, pushInObject) {
 		var obj = document.createElement('div');
 		obj.id = element;
 		//background-color: red;
 		obj.style = 'width: ' + width + 'px; height: ' + height + 'px; left: ' + positionX + 'px; top: ' + positionY + 'px; display: flex; align-self: ' + flex  + '; background-image: url(' + img + '); position:relative; '
-		placeContent(obj);
+        placeContent(obj);
+        
+        if(pushInObject) {
+            var element = {
+                id: obj.id,
+                position: obj.style.left,
+                width: obj.style.width
+            }
+            elementsInteract.push(element);
+        }
 	}
 
 	function getActionInterval(playerPosition, element) {
-        var doorStart = parseInt(document.getElementById(element.id).style.left);
-		var doorEnd = doorStart + parseInt(document.getElementById(element.id).style.width);
-        return playerPosition >= doorStart && playerPosition <= doorEnd;
+        var intervalStart = parseInt(document.getElementById(element.id).style.left);
+		var intervalEnd = intervalStart + parseInt(document.getElementById(element.id).style.width);
+        return playerPosition >= intervalStart && playerPosition <= intervalEnd;
 	}
 
-	function getDoorAction(player) {
+	function getAction(player) {
         var playerPosition = parseInt(player.style.left);
-        for(i = 0; i < elementsDoors.length; i++) {
-            console.log(elementsDoors[i].doorOut)
-            if(getDoorPosition(playerPosition, elementsDoors[i])) {
-                var doorOut = elementsDoors[i].doorOut;
-                console.log(doorOut)
-                player.setAttribute('style', 'left:' + doorOut + 'px');
+        for(i = 0; i < elementsInteract.length; i++) {
+            console.log(elementsInteract[i].doorOut)
+            if(getActionInterval(playerPosition, elementsInteract[i])) {
+                if(/door[\s\S]/.test(elementsInteract[i].id)) {   
+                    var doorOut = elementsInteract[i].doorOut;
+                    player.setAttribute('style', 'left:' + doorOut + 'px');
+                }
+                if(/deskOfficer/.test(elementsInteract[i].id)) {
+                    var button = document.createElement('p');
+                    button.style = 'color: white;'
+                    canvas.appendChild(button);
+                }
             }
         }
     }
+
+//    function interactPeople(player) {
+//        var playerPosition = parseInt(player.style.left);    
+//        if(getActionInterval(playerPosition, )) {
+
+//        }
+//    }
     
 	function pressUpLevel(player) {
-		getDoorAction(player);
+		getAction(player);
     }
 
 	function character() {
