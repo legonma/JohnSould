@@ -12,32 +12,44 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(155, 235, 59, 1);	
-/*
-	background-image: url(background1.png)
-*/
+	background-color: rgba(155, 235, 59, 0);	
+	background-image: url(img/background1.png)
 }
 
 #level {
 	position: relative;
-	background-color: rgba(255, 235, 59, 1);
+	background-color: rgba(255, 235, 59, 0);
 	display: flex;
 }
 
-#character {
+
+#spriteBox {
+    width: 80px;
+    height: 120px;
+    position: absolute;
+    display: flex;
+    align-self: center;
+    left: -17px;
+    background-color: red;
 /*	
 	background-image: url(characterSprite.png);
-*/
-	background-repeat: no-repeat;
-	background-position: 0px 0px;
-	background-color: rgba(0, 0, 0, 1);
-	width: 80px;
-	height: 120px;
-	position: absolute;
-	display: flex;
-	align-self: flex-end;
+*/    
 }
 
+#characterBox {
+    /*	
+        background-image: url(characterSprite.png);
+    */
+        background-repeat: no-repeat;
+        background-position: 0px 0px;
+        background-color: rgba(0, 0, 0, 1);
+        width: 48px;
+        height: 120px;
+        position: absolute;
+        display: flex;
+        align-self: flex-end;
+    }
+    
 
 #door1, #door2 {
 /*	

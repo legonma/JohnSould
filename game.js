@@ -1,7 +1,7 @@
 window.onload = function() {
     var canvas = document.getElementById('canvas');
     var elementsDoors = [];
-
+    
 	function buildBackground(level) {
 		var background = document.createElement('div');
 		background.id = 'background1';
@@ -62,6 +62,7 @@ window.onload = function() {
 	}
 
 	function contentAppearDown() {
+        createElementToLevel('deskOfficer', 50, 120, '', 320, 0, 'flex-end')
 		createElementToLevel('board', 120, 48, 'board.pngs', 70, -80, 'flex-end')
 		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 60, -3, 'flex-start')
 		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 180, -3, 'flex-start')
@@ -75,10 +76,10 @@ window.onload = function() {
 		placeContent(obj);
 	}
 
-	function getDoorPosition(player, door) {
-        var doorStart = parseInt(document.getElementById(door.id).style.left);
-		var doorEnd = doorStart + parseInt(document.getElementById(door.id).style.width);
-        return player >= doorStart && player <= doorEnd;
+	function getActionInterval(playerPosition, element) {
+        var doorStart = parseInt(document.getElementById(element.id).style.left);
+		var doorEnd = doorStart + parseInt(document.getElementById(element.id).style.width);
+        return playerPosition >= doorStart && playerPosition <= doorEnd;
 	}
 
 	function getDoorAction(player) {
@@ -99,24 +100,23 @@ window.onload = function() {
 
 	function character() {
 		var character = document.createElement('div');
-		character.id = 'character'; 
-		character.style = 'top: 60px; left: 0px; transform: scaleX(1); background-position: 0px 0px; animation: steyCharacterAnimation 3s steps(8) infinite; transform: scaleX(1)'
-		var actionSize = document.createElement('div');
-		actionSize.id = 'actionSize'
-		actionSize.style = 'width: 46px; height: 120px; position: relative; display: flex; align-self: center; left: 17px; background-color: red';
-		//character.appendChild(actionSize);
+		character.id = 'characterBox'; 
+		character.style = 'top: 60px; left: 0px;'
+		var spriteBox = document.createElement('div');
+		spriteBox.id = 'spriteBox';
+//		spriteBox.style = 'background-position: 0px 0px; animation: steyCharacterAnimation 3s steps(8) infinite;';
+		character.appendChild(spriteBox);
 		placeContent(character)
 	}
 
     //Character Controller
 	function characterController() {
-		var player = document.getElementById('character')
+		var player = document.getElementById('characterBox')
 		var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
 		var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
 		console.log(roomLimits)
 		var walk = -80;
 		var countSteps = 1;
-		var actionSize = document.getElementById('actionSize')
 		document.addEventListener('keydown', (e) => {
 			console.log(e)
 			if(!player.style.left) {
@@ -131,7 +131,7 @@ window.onload = function() {
 				console.log(countSteps)
 				player.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
 				countSteps === 6 ? countSteps = 1 : countSteps ++; 
-				player.style.left = (left + 10) + 'px'
+                player.style.left = (left + 10) + 'px'
 			}
 
 			if(e.key === 'ArrowLeft' && left > 0) {
