@@ -1,5 +1,6 @@
 window.onload = function() {
-	var canvas = document.getElementById('canvas');
+    var canvas = document.getElementById('canvas');
+    var elementsDoors = [];
 
 	function buildBackground(level) {
 		var background = document.createElement('div');
@@ -8,11 +9,11 @@ window.onload = function() {
 		wall.id = 'level';
 		background.appendChild(wall);
 		canvas.appendChild(background);
-		alingWalls(wall);
-		positionCalculator(background, canvas);
+		buildWalls(wall);
+		centerLevel(background, canvas);
 	}
 
-	function alingWalls(obj) {
+	function buildWalls(obj) {
 		var backgroundId = document.getElementById('background1');
 		var backgroundStyle = window.getComputedStyle(backgroundId, null);
 		var widthStyle = parseInt(backgroundStyle.getPropertyValue('width')) - 20;
@@ -20,7 +21,7 @@ window.onload = function() {
 		obj.style = 'width: ' + widthStyle + 'px; height: ' + heightStyle  + 'px;';
 	}
 
-	function positionCalculator(obj, backObj) {
+	function centerLevel(obj, backObj) {
 		var objStyle = window.getComputedStyle(document.getElementById(obj.id),null)
 		var canvasStyle = window.getComputedStyle(backObj, null)
 		//To center element we`ll calculate a new top and left.
@@ -29,27 +30,38 @@ window.onload = function() {
 		obj.style = 'top: ' + newTop + 'px; left: ' + newLeft + 'px';
 	}
 
-	function doors(index, positionX) {
+	function doorsConstructor(index, positionX, doorOut) {
 		var door = document.createElement('div');
 		door.id = 'door' + index;
-		door.style = 'left: ' + positionX + 'px; width: 62px; height: 125px;'
-		placeContent(door);
+		door.setAttribute('style', 'left: ' + positionX + 'px; width: 62px; height: 125px;')
+        placeContent(door);
+        var doorObj = {
+            id: door.id,
+            position: door.style.left,
+            width: door.style.width,
+            doorOut: doorOut
+        }
+        elementsDoors.push(doorObj)
 	}
 
+    function placeContent(content) {
+		var level = document.getElementById('level');
+		level.appendChild(content)		
+    }
+    
 	buildBackground();
-	doors(1, 522)
-	doors(2, 606)
-	levelContent();
+	doorsConstructor(1, 522, 606)
+	doorsConstructor(2, 606, 522)
+	contentAppearDown();
 	character()
-	levelContentDown();
-	characterController();
+	contentAppearUp();
+    characterController();
 
-	function levelContentDown() {
+	function contentAppearUp() {
 		createElementToLevel('maceta', 46, 70, 'maceta.pngs', -290, -0, 'flex-end')
-
 	}
 
-	function levelContent() {
+	function contentAppearDown() {
 		createElementToLevel('board', 120, 48, 'board.pngs', 70, -80, 'flex-end')
 		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 60, -3, 'flex-start')
 		createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', 180, -3, 'flex-start')
@@ -63,49 +75,27 @@ window.onload = function() {
 		placeContent(obj);
 	}
 
-	function placeContent(content) {
-		var wall = document.getElementById('level');
-		wall.appendChild(content)		
+	function getDoorPosition(player, door) {
+        var doorStart = parseInt(document.getElementById(door.id).style.left);
+		var doorEnd = doorStart + parseInt(document.getElementById(door.id).style.width);
+        return player >= doorStart && player <= doorEnd;
 	}
 
-	function getDoorPosition(playerPosition, doorId) {
-		var doorStart = parseInt(document.getElementById(doorId).style.left);
-		var doorEnd = doorStart + parseInt(document.getElementById(doorId).style.width);
-		return playerPosition >= doorStart && playerPosition <= doorEnd;
-	}
-
-
-	function getDoorAction(player, doorIn, doorOut) {
-		var beginAction = parseInt(document.getElementById(doorIn).style.left);
-		var endAction = beginAction + parseInt(document.getElementById(doorIn).style.width);
-		
-		var appear = document.getElementById(doorOut).style.left;
-		var playerPosition = parseInt(player.style.left);
-
-		if(playerPosition >= beginAction && playerPosition <= endAction) {
-			player.style.left = appear; 
-		}
-	}
-
-
-
-	//add level like param
-	function pressUpLevel(player, door1, door2) {
-/*
-		var left = parseInt(player.style.left);
-		console.log(left)
-		if(getDoorPosition(left, door1)) {
-			player.style.left = '620px'
-		}
-		if(getDoorPosition(left, door2)) {
-			player.style.left = '530px'
-		}
-*/
-
-		// View the action (the var appears stay with the last value)
-		getDoorAction(player, door2, door1);
-		getDoorAction(player, door1, door2);
-	}
+	function getDoorAction(player) {
+        var playerPosition = parseInt(player.style.left);
+        for(i = 0; i < elementsDoors.length; i++) {
+            console.log(elementsDoors[i].doorOut)
+            if(getDoorPosition(playerPosition, elementsDoors[i])) {
+                var doorOut = elementsDoors[i].doorOut;
+                console.log(doorOut)
+                player.setAttribute('style', 'left:' + doorOut + 'px');
+            }
+        }
+    }
+    
+	function pressUpLevel(player) {
+		getDoorAction(player);
+    }
 
 	function character() {
 		var character = document.createElement('div');
@@ -114,10 +104,11 @@ window.onload = function() {
 		var actionSize = document.createElement('div');
 		actionSize.id = 'actionSize'
 		actionSize.style = 'width: 46px; height: 120px; position: relative; display: flex; align-self: center; left: 17px; background-color: red';
-		character.appendChild(actionSize);
+		//character.appendChild(actionSize);
 		placeContent(character)
 	}
 
+    //Character Controller
 	function characterController() {
 		var player = document.getElementById('character')
 		var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
@@ -136,29 +127,22 @@ window.onload = function() {
 			console.log(left)
 			var transform = player.style.transform;
 
-			//view with juan how make this works
-//			if(e.key !== 'ArrowRight' && e.key !== 'ArrowLeft' && e.key !== 'ArrowUp') {
-//				player.style = 'animation: steyCharacterAnimation 3s steps(8) infinite;'
-//			}
-
 			if(e.key === 'ArrowRight' && left < roomLimits) {
 				console.log(countSteps)
-				player.style =  'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px';
+				player.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
 				countSteps === 6 ? countSteps = 1 : countSteps ++; 
 				player.style.left = (left + 10) + 'px'
 			}
 
 			if(e.key === 'ArrowLeft' && left > 0) {
-				console.log(countSteps)
-				console.log(actionSize.style.left)
-				player.style =  'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px';
+				player.setAttribute('style', 'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
 				countSteps === 6 ? countSteps = 1 : countSteps ++; 
 				player.style.left = (left - 10) + 'px'
 			}
 
 			//Actions
 			if(e.key === 'ArrowUp') {
-				pressUpLevel(player, 'door1', 'door2');
+				pressUpLevel(player);
 			}
 
 			if(e.key === 'ArrowDown') {
