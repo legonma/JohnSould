@@ -3,6 +3,8 @@
 	height: 768px;
 	position: absolute;
 	background-color: black;
+	display: flex;
+	justify-content: center;
 }
 
 #background1 {
@@ -12,13 +14,33 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	background-color: rgba(155, 235, 59, 0);	
+	background-color: rgba(155, 235, 59, 1);	
+/*	
 	background-image: url(img/background1.png)
+*/
+}
+
+#textArea {
+	width: 560px;
+	height: 100px;
+	background-color: rgba(255, 255, 255, 0);
+	display: flex;
+	position: absolute;
+	top: 500px;
+	display: flex;
+	justify-content: center;
+}
+
+#text {
+	color: white;
+	font-family: 'Share Tech Mono';
+	font-size: 14px;
+	position: absolute;
 }
 
 #level {
 	position: relative;
-	background-color: rgba(255, 235, 59, 0);
+	background-color: rgba(255, 235, 59, 1);
 	display: flex;
 }
 
@@ -74,7 +96,11 @@
 }
 
 #ventilador {
-	  animation: ventiladorAnimation 1s steps(10) infinite;
+	animation: ventiladorAnimation 1s steps(10) infinite;
+}
+
+#deskOfficer {
+	background-color: cadetblue; 
 }
 
 @keyframes ventiladorAnimation {
@@ -89,4 +115,9 @@
 	100% { 
 		background-position-x: -656px;
 	 }
+}
+
+@font-face {
+	font-family: 'Share Tech Mono';
+	src: url('fonts/ShareTechMono-Regular.ttf');
 }

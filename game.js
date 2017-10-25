@@ -1,5 +1,6 @@
 window.onload = function() {
     var canvas = document.getElementById('canvas');
+    var text = document.getElementById('text')
     var elementsInteract = [];
     
 	function buildBackground(level) {
@@ -11,7 +12,7 @@ window.onload = function() {
 		canvas.appendChild(background);
 		buildWalls(wall);
 		centerLevel(background, canvas);
-	}
+    }
 
 	function buildWalls(obj) {
 		var backgroundId = document.getElementById('background1');
@@ -49,7 +50,7 @@ window.onload = function() {
 		level.appendChild(content)		
     }
     
-	buildBackground();
+    buildBackground();
 	doorsConstructor(1, 522, 606)
 	doorsConstructor(2, 606, 522)
 	contentAppearDown();
@@ -94,28 +95,41 @@ window.onload = function() {
 	function getAction(player) {
         var playerPosition = parseInt(player.style.left);
         for(i = 0; i < elementsInteract.length; i++) {
-            console.log(elementsInteract[i].doorOut)
-            if(getActionInterval(playerPosition, elementsInteract[i])) {
-                if(/door[\s\S]/.test(elementsInteract[i].id)) {   
-                    var doorOut = elementsInteract[i].doorOut;
+            var element = elementsInteract[i];
+            console.log(elementsInteract[i].id)
+            if(getActionInterval(playerPosition, element)) {
+                if(/door[\s\S]/.test(element.id)) {   
+                    var doorOut = element.doorOut;
                     player.setAttribute('style', 'left:' + doorOut + 'px');
                 }
-                if(/deskOfficer/.test(elementsInteract[i].id)) {
-                    var button = document.createElement('p');
-                    button.style = 'color: white;'
-                    canvas.appendChild(button);
+                if(/deskOfficer/.test(element.id)) {
+                    textFactory(element);
                 }
             }
         }
     }
-
-//    function interactPeople(player) {
-//        var playerPosition = parseInt(player.style.left);    
-//        if(getActionInterval(playerPosition, )) {
-
-//        }
-//    }
     
+    function setTime(array) {
+        for(var i = 0; i <= array.length; i++) {
+            setTimeout(texts(array[i]), 2000);
+        }
+        function texts(arraytext) {
+            console.log(arraytext)
+            text.innerText = arraytext;            
+        }
+    }
+
+    function textFactory(element) {
+        if(/deskOfficer/.test(element.id)) {
+            var array = [
+                'This is a policeman....',
+                'He have a picture of the emploier of month...',
+                'like mcdonals but with a gun.'
+            ];
+            setTime(array)
+        }
+    }
+
 	function pressUpLevel(player) {
 		getAction(player);
     }
