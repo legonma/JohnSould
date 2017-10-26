@@ -3,18 +3,18 @@ window.onload = function() {
     var text = document.getElementById('text')
     var elementsInteract = [];
 
-    function buildBackground(level) {
+    function createElementBackground(level) {
         var background = document.createElement('div');
         background.id = 'background1';
         var wall = document.createElement('div');
         wall.id = 'level';
         background.appendChild(wall);
         canvas.appendChild(background);
-        buildWalls(wall);
-        centerLevel(background, canvas);
+        createElementWall(wall);
+        centerElementIn(background, canvas);
     }
 
-    function buildWalls(obj) {
+    function createElementWall(obj) {
         var backgroundId = document.getElementById('background1');
         var backgroundStyle = window.getComputedStyle(backgroundId, null);
         var widthStyle = parseInt(backgroundStyle.getPropertyValue('width')) - 20;
@@ -22,7 +22,7 @@ window.onload = function() {
         obj.style = 'width: ' + widthStyle + 'px; height: ' + heightStyle + 'px;';
     }
 
-    function centerLevel(obj, backObj) {
+    function centerElementIn(obj, backObj) {
         var objStyle = window.getComputedStyle(document.getElementById(obj.id), null)
         var canvasStyle = window.getComputedStyle(backObj, null)
             //To center element we`ll calculate a new top and left.
@@ -50,7 +50,7 @@ window.onload = function() {
         level.appendChild(content)
     }
 
-    buildBackground();
+    createElementBackground();
     doorsConstructor(1, 522, 606)
     doorsConstructor(2, 606, 522)
     contentAppearDown();
@@ -92,7 +92,7 @@ window.onload = function() {
         return playerPosition >= intervalStart && playerPosition <= intervalEnd;
     }
 
-    function getAction(player) {
+    function defineActionWhenPressKey(player, e) {
         var playerPosition = parseInt(player.style.left);
         for (i = 0; i < elementsInteract.length; i++) {
             var element = elementsInteract[i];
@@ -103,7 +103,7 @@ window.onload = function() {
                     player.setAttribute('style', 'left:' + doorOut + 'px');
                 }
                 if (/deskOfficer/.test(element.id)) {
-                    textFactory(element);
+                    textFactory(element, e);
                 }
             }
         }
@@ -130,19 +130,21 @@ window.onload = function() {
         text.innerText = line;
     }
 
-    function textFactory(element) {
+    function textFactory(element, e) {
         if (/deskOfficer/.test(element.id)) {
-            var array = [
-                'This is a policeman....',
-                'He have a picture of the emploier of month...',
-                'like mcdonals but with a gun.'
-            ];
-            setTime(array)
+            if(e === 'ArrowUp') {
+                var array = [
+                    'This is a policeman....',
+                    'He have a picture of the emploier of month...',
+                    'like mcdonals but with a gun...',
+                    'maeby, he know how where is my new office.'
+                ];
+                setTime(array)
+            }
+            if(e === 'Space') {
+                console.log(e);
+            }
         }
-    }
-
-    function pressUpLevel(player) {
-        getAction(player);
     }
 
     function character() {
@@ -189,13 +191,17 @@ window.onload = function() {
 
             //Actions
             if (e.key === 'ArrowUp') {
-                pressUpLevel(player);
+                defineActionWhenPressKey(player, 'ArrowUp');
             }
 
             if (e.key === 'ArrowDown') {
                 player.style = 'animation: steyCharacterAnimation 3s steps(8) infinite;'
                 player.style.left = left + 'px'
                 player.style.transform = transform;
+            }
+
+            if(e.key === 'Space') {
+                defineActionWhenPressKey(player, 'Space');
             }
 
         })
