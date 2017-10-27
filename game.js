@@ -86,26 +86,94 @@ window.onload = function() {
         }
     }
 
-    function getActionInterval(playerPosition, element) {
+    function objectsAreInPosition(playerPosition, element) {
+        console.log('el elemento es' + element.id)
         var intervalStart = parseInt(document.getElementById(element.id).style.left);
         var intervalEnd = intervalStart + parseInt(document.getElementById(element.id).style.width);
         return playerPosition >= intervalStart && playerPosition <= intervalEnd;
     }
 
-    function defineActionWhenPressKey(player, e) {
+    function defineActionWhenPressKey(player, event) {
         var playerPosition = parseInt(player.style.left);
         for (i = 0; i < elementsInteract.length; i++) {
             var element = elementsInteract[i];
-            console.log(elementsInteract[i].id)
-            if (getActionInterval(playerPosition, element)) {
+            if (objectsAreInPosition(playerPosition, element)) {
                 if (/door[\s\S]/.test(element.id)) {
                     var doorOut = element.doorOut;
                     player.setAttribute('style', 'left:' + doorOut + 'px');
                 }
                 if (/deskOfficer/.test(element.id)) {
-                    textFactory(element, e);
+                    console.log(event)
+                    showDialog(element, event);
                 }
             }
+        }
+    }
+
+    function dialogWhenPressUp(player, element) {
+        switch(element.id) {
+            case 'door1':
+                var dialog = [
+                    'Here sayd "ONLY PERSONAL"...',
+                    'I take all cases to personal, so...'
+                ];
+                setTime(dialog);
+            break;
+            case 'door2':
+                var dialog = [
+                    'Trap.. Chrick.. Click..',
+                    'I think is lock'
+                ];
+                setTime(dialog);                
+            break;
+            case 'deskOfficer':
+                var dialog = [
+                    'This is a policeman....',
+                    'He have a picture of the emploier of month...',
+                    'like mcdonals but with a gun...',
+                    'maeby, he know how where is my new office.'
+                ];
+                setTime(dialog);
+            break;
+            default:
+                var dialog = ['I do not anything to sayd']
+                setTime(dialog);                
+            break;
+        }    
+    }
+
+    function actionWhenPressSpace(array) {
+        if (/door[\s\S]/.test(element.id)) {
+            var doorOut = element.doorOut;
+            player.setAttribute('style', 'left:' + doorOut + 'px');
+        }
+        if (/deskOfficer/.test(element.id)) {
+            console.log(event)
+            showDialog(element, event);
+        }           
+    }
+
+    function checkIfElementIsPresent(player, event) {
+        var playerLocation = parseInt(player.style.left);
+        for(var i = 0; i < elementsInteract.length; i ++) {
+            var element = elementsInteract[i];
+            if(objectsAreInPosition(playerLocation, element)) {
+                if(event === 'ArrowUp') {
+                    dialogWhenPressUp(player, element);
+                }
+                if(event === 'Space') {
+                    dialogWhenPressSpace()
+                }
+            }
+/*            if(!objectsAreInPosition(playerLocation, element)) {
+                if(event === 'ArrowUp') {
+                    dialogWhenPressUp(player, 'nothing');
+                }
+                if(event === 'Space') {
+                    dialogWhenPressSpace(player, 'nothing');
+                }
+            }
+*/
         }
     }
 
@@ -130,9 +198,9 @@ window.onload = function() {
         text.innerText = line;
     }
 
-    function textFactory(element, e) {
+    function showDialog(element, event) {
         if (/deskOfficer/.test(element.id)) {
-            if(e === 'ArrowUp') {
+            if(event === 'ArrowUp') {
                 var array = [
                     'This is a policeman....',
                     'He have a picture of the emploier of month...',
@@ -141,8 +209,8 @@ window.onload = function() {
                 ];
                 setTime(array)
             }
-            if(e === 'Space') {
-                console.log(e);
+            if(event === 'Space') {
+                console.log(event);
             }
         }
     }
@@ -191,7 +259,7 @@ window.onload = function() {
 
             //Actions
             if (e.key === 'ArrowUp') {
-                defineActionWhenPressKey(player, 'ArrowUp');
+                checkIfElementIsPresent(player, 'ArrowUp');
             }
 
             if (e.key === 'ArrowDown') {
@@ -200,7 +268,7 @@ window.onload = function() {
                 player.style.transform = transform;
             }
 
-            if(e.key === 'Space') {
+            if(e.keyCode === 32) {
                 defineActionWhenPressKey(player, 'Space');
             }
 
