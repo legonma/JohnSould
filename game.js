@@ -1,7 +1,6 @@
 window.onload = function() {
     var canvas = document.getElementById('canvas');
     var textArea = document.getElementById('textArea');
-    var text = document.getElementById('text');
     var elementsInteract = []; 
     var stopEvent = false
 
@@ -174,10 +173,13 @@ window.onload = function() {
 			})
 		*/
         var dialogs = array.reverse()
+        var text = document.createElement('p');
+        text.id = 'text';
+        textArea.appendChild(text);
         var finish = setInterval(() => {
             if (dialogs.length === 0) {
                 clearInterval(finish);
-                printInDialogBox('')
+                textArea.removeChild(text);
             } else {
                 printInDialogBox(dialogs.pop())
             }
@@ -205,6 +207,7 @@ window.onload = function() {
     }
 
     function printInDialogBox(line) {
+        var text = document.getElementById('text');
         text.innerText = line;
     }
 
@@ -293,7 +296,7 @@ window.onload = function() {
         var childsDivAll = childsDiv.childNodes
         var i = 0;
         console.log(childsDivAll)
-        var question = childsDiv[i].id;
+        var question = childsDivAll[i].id;
         document.getElementById(question).setAttribute('style', 'background-color: red;')
         console.log(question)
         document.addEventListener('keydown', function questions(e) {
