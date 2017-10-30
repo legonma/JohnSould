@@ -1,3 +1,12 @@
+p {
+	font-family: 'Share Tech Mono';
+	font-size: 14px;
+	position: absolute;
+	color: white;
+	background-color: grey;
+	width: 100%;
+}
+
 #canvas {
 	width: 1024px;
 	height: 768px;
@@ -32,10 +41,6 @@
 }
 
 #text {
-	color: white;
-	font-family: 'Share Tech Mono';
-	font-size: 14px;
-	position: absolute;
 }
 
 #level {
@@ -101,6 +106,11 @@
 
 #deskOfficer {
 	background-color: cadetblue; 
+}
+
+.question {
+	color: white;
+	padding-bottom: 4px;
 }
 
 @keyframes ventiladorAnimation {

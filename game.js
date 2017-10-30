@@ -1,7 +1,9 @@
 window.onload = function() {
     var canvas = document.getElementById('canvas');
-    var text = document.getElementById('text')
-    var elementsInteract = [];
+    var textArea = document.getElementById('textArea');
+    var text = document.getElementById('text');
+    var elementsInteract = []; 
+    var stopEvent = false
 
     function createElementBackground(level) {
         var background = document.createElement('div');
@@ -103,8 +105,8 @@ window.onload = function() {
                     player.setAttribute('style', 'left:' + doorOut + 'px');
                 }
                 if (/deskOfficer/.test(element.id)) {
-                    console.log(event)
                     showDialog(element, event);
+                    stopEvent = true;
                 }
             }
         }
@@ -158,22 +160,10 @@ window.onload = function() {
         for(var i = 0; i < elementsInteract.length; i ++) {
             var element = elementsInteract[i];
             if(objectsAreInPosition(playerLocation, element)) {
-                if(event === 'ArrowUp') {
-                    dialogWhenPressUp(player, element);
-                }
-                if(event === 'Space') {
-                    dialogWhenPressSpace()
-                }
+                dialogWhenPressUp(player, element);
+            } else {
+                console.log('no deberia pasar por aca')
             }
-/*            if(!objectsAreInPosition(playerLocation, element)) {
-                if(event === 'ArrowUp') {
-                    dialogWhenPressUp(player, 'nothing');
-                }
-                if(event === 'Space') {
-                    dialogWhenPressSpace(player, 'nothing');
-                }
-            }
-*/
         }
     }
 
@@ -194,23 +184,43 @@ window.onload = function() {
         }, 2000)
     }
 
+    function createElementP(index, dialog) {
+        var question = document.createElement('p');
+        question.id = 'question' + index;
+        question.setAttribute('style', 'margin-top:' + (30 * index) + 'px')
+        textArea.appendChild(question);
+        var ponerTexto = document.getElementById(question.id);
+        ponerTexto.innerText = dialog;
+    }
+
+    function printQuestionInTextArea(array) {
+        var dialogs = array
+        var question = setInterval(() => {
+            if(dialogs.length) {
+                createElementP(dialogs.length, dialogs.pop())
+            } else {
+                clearInterval(question);
+            }
+        })
+    }
+
     function printInDialogBox(line) {
         text.innerText = line;
     }
 
     function showDialog(element, event) {
         if (/deskOfficer/.test(element.id)) {
+            var array = [
+                'hi, im new here, my name is john where is my office',
+                'you are the same guy in the picture',
+                'where is the bathroom' 
+            ];
             if(event === 'ArrowUp') {
-                var array = [
-                    'This is a policeman....',
-                    'He have a picture of the emploier of month...',
-                    'like mcdonals but with a gun...',
-                    'maeby, he know how where is my new office.'
-                ];
                 setTime(array)
             }
             if(event === 'Space') {
-                console.log(event);
+                printQuestionInTextArea(array);
+
             }
         }
     }
@@ -234,7 +244,7 @@ window.onload = function() {
         console.log(roomLimits)
         var walk = -80;
         var countSteps = 1;
-        document.addEventListener('keydown', (e) => {
+        document.addEventListener('keydown', function listener(e) {
             console.log(e)
             if (!player.style.left) {
                 player.style.left = '0px'
@@ -270,9 +280,34 @@ window.onload = function() {
 
             if(e.keyCode === 32) {
                 defineActionWhenPressKey(player, 'Space');
+                if(stopEvent) {
+                    this.removeEventListener('keydown', listener)    
+                    questionMode();                 
+                }
             }
-
         })
     }
 
+    function questionMode(){
+        var childsDiv = document.getElementById('textArea');
+        var childsDivAll = childsDiv.childNodes
+        var i = 0;
+        console.log(childsDivAll)
+        var question = childsDiv[i].id;
+        document.getElementById(question).setAttribute('style', 'background-color: red;')
+        console.log(question)
+        document.addEventListener('keydown', function questions(e) {
+            if(e.key === 'ArrowUp') {
+                if(i < childsDiv.length){
+                    question.style = '';
+                    question = childsDiv[i++];
+                    question.style = 'background-color: red;'
+                }
+            }
+            if(e.key === 'ArrowDown') {
+                question = childsDiv[-1];
+                console.log(question)
+            }
+        })
+    }
 }
