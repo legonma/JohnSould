@@ -271,13 +271,18 @@ window.onload = function() {
 
     function questionMode(){
         stopMoveEvent = true;
+        var i = 0;        
         document.addEventListener('keydown', function questions(e) {
             var allQuestions = textArea.childNodes
-            var i = 0;
             if(!stopQuestionEvent) {
-                if(e.key === 'ArrowDown' && i <= allQuestions.length) {
+                if(e.key === 'ArrowUp' && i > 0) {
                     allQuestions[i].style.backgroundColor = '';
-                    i = i + 1;
+                    i --;
+                    allQuestions[i].style.backgroundColor = 'red';
+                }
+                if(e.key === 'ArrowDown' && i < (allQuestions.length - 1)) {
+                    allQuestions[i].style.backgroundColor = '';
+                    i ++;
                     allQuestions[i].style.backgroundColor = 'red';
                 }
             }
