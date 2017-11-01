@@ -2,7 +2,8 @@ window.onload = function() {
     var canvas = document.getElementById('canvas');
     var textArea = document.getElementById('textArea');
     var elementsInteract = []; 
-    var stopEvent = false
+    var stopMoveEvent = false;
+    var stopQuestionEvent = false;
 
     function createElementBackground(level) {
         var background = document.createElement('div');
@@ -105,7 +106,6 @@ window.onload = function() {
                 }
                 if (/deskOfficer/.test(element.id)) {
                     showDialog(element, event);
-                    stopEvent = true;
                 }
             }
         }
@@ -143,17 +143,6 @@ window.onload = function() {
         }    
     }
 
-    function actionWhenPressSpace(array) {
-        if (/door[\s\S]/.test(element.id)) {
-            var doorOut = element.doorOut;
-            player.setAttribute('style', 'left:' + doorOut + 'px');
-        }
-        if (/deskOfficer/.test(element.id)) {
-            console.log(event)
-            showDialog(element, event);
-        }           
-    }
-
     function checkIfElementIsPresent(player, event) {
         var playerLocation = parseInt(player.style.left);
         for(var i = 0; i < elementsInteract.length; i ++) {
@@ -167,11 +156,6 @@ window.onload = function() {
     }
 
     function setTime(array) {
-        /*
-		array.forEach((line, i) => {
-                setTimeout(printInDialogBox.bind(null, line), 2000 * (i + 1))
-			})
-		*/
         var dialogs = array.reverse()
         var text = document.createElement('p');
         text.id = 'text';
@@ -189,14 +173,13 @@ window.onload = function() {
     function createElementP(index, dialog) {
         var question = document.createElement('p');
         question.id = 'question' + index;
-        question.setAttribute('style', 'margin-top:' + (30 * index) + 'px')
         textArea.appendChild(question);
         var ponerTexto = document.getElementById(question.id);
         ponerTexto.innerText = dialog;
     }
 
     function printQuestionInTextArea(array) {
-        var dialogs = array
+        var dialogs = array.reverse()
         var question = setInterval(() => {
             if(dialogs.length) {
                 createElementP(dialogs.length, dialogs.pop())
@@ -218,12 +201,9 @@ window.onload = function() {
                 'you are the same guy in the picture',
                 'where is the bathroom' 
             ];
-            if(event === 'ArrowUp') {
-                setTime(array)
-            }
             if(event === 'Space') {
                 printQuestionInTextArea(array);
-
+                questionMode()
             }
         }
     }
@@ -248,6 +228,7 @@ window.onload = function() {
         var walk = -80;
         var countSteps = 1;
         document.addEventListener('keydown', function listener(e) {
+            if(!stopMoveEvent) {
             console.log(e)
             if (!player.style.left) {
                 player.style.left = '0px'
@@ -283,33 +264,22 @@ window.onload = function() {
 
             if(e.keyCode === 32) {
                 defineActionWhenPressKey(player, 'Space');
-                if(stopEvent) {
-                    this.removeEventListener('keydown', listener)    
-                    questionMode();                 
-                }
             }
+        }
         })
     }
 
     function questionMode(){
-        var childsDiv = document.getElementById('textArea');
-        var childsDivAll = childsDiv.childNodes
-        var i = 0;
-        console.log(childsDivAll)
-        var question = childsDivAll[i].id;
-        document.getElementById(question).setAttribute('style', 'background-color: red;')
-        console.log(question)
+        stopMoveEvent = true;
         document.addEventListener('keydown', function questions(e) {
-            if(e.key === 'ArrowUp') {
-                if(i < childsDiv.length){
-                    question.style = '';
-                    question = childsDiv[i++];
-                    question.style = 'background-color: red;'
+            var allQuestions = textArea.childNodes
+            var i = 0;
+            if(!stopQuestionEvent) {
+                if(e.key === 'ArrowDown' && i <= allQuestions.length) {
+                    allQuestions[i].style.backgroundColor = '';
+                    i = i + 1;
+                    allQuestions[i].style.backgroundColor = 'red';
                 }
-            }
-            if(e.key === 'ArrowDown') {
-                question = childsDiv[-1];
-                console.log(question)
             }
         })
     }

@@ -1,10 +1,8 @@
 p {
 	font-family: 'Share Tech Mono';
 	font-size: 14px;
-	position: absolute;
 	color: white;
 	background-color: grey;
-	width: 100%;
 }
 
 #canvas {
@@ -31,13 +29,11 @@ p {
 
 #textArea {
 	width: 560px;
-	height: 100px;
 	background-color: rgba(255, 255, 255, 0);
 	display: flex;
 	position: absolute;
 	top: 500px;
-	display: flex;
-	justify-content: center;
+	display: block;
 }
 
 #text {
