@@ -4,44 +4,54 @@ var stage = [{
         width: 705,
         height: 200
     },
-    doors: [{
-            id: 1,
-            positionX: 522,
-            out: 606
-        },
-        {
-            id: 1,
-            positionX: 606,
-            out: 522
-        }
-    ],
     elementsOverCharacter: [{
         name: 'macetaAmarilla',
         positionX: -290,
         positionY: -0
     }],
     character: true,
-    elementsUnderCharacter: [{
-            name: 'deskOfficer',
+    elementsUnderCharacter: [
+        {   name: 'deskOfficer',
             positionX: 320,
-            positionY: 0
+            positionY: 0,
+            observation: [
+                'This is a policeman...',
+                'He have a picture of the emploier of month...',
+                'like mcdonals but with a gun...',
+                'maeby, he know how where is my new office.'
+            ],
+            dialogs: [
+                'hi, im new here, my name is john where is my office',
+                'you are the same guy in the picture',
+                'where is the bathroom'
+            ] 
         },
-        {
-            name: 'board',
+        {   name: 'door',
+            index: 1,
+            positionX: 522,
+            out: 606
+        },
+        {   name: 'door',
+            index: 2,
+            positionX: 606,
+            out: 522
+        },        
+        {   name: 'board',
             positionX: 70,
             positionY: -80
         },
-        {
-            name: 'ventilador',
+        {   name: 'ventilador',
             positionX: 60,
             positionY: -3
         },
-        {
-            name: 'ventilador',
+        {   name: 'ventilador',
             positionX: 180,
             positionY: -3
         }
-    ]
+    ],
+    dialogs: [{
+        name: 'deskOfficer'
+    }]
 }]
 
 
@@ -77,40 +87,58 @@ function centerElementIn(obj, backObj) {
 }
 
 
-
 // ==================  CREATE ELEMENETS ON SCHENE  ==========================
 function getElementsObj(element) {
     switch (element.name) {
         case 'macetaAmarilla':
-            createElementToLevel('macetaAmarilla', 46, 70, 'maceta.pngs', element.positionX, element.positionY, 'flex-end', false);
-            break;
-        case 'macetaChica':
+            createElementToLevel(element.name, '', 46, 70, 'maceta.pngs', element.positionX, element.positionY, 'flex-end', false);
             break;
         case 'deskOfficer':
-            createElementToLevel('deskOfficer', 50, 120, '', element.positionX, element.positionY, 'flex-end', true)
+            createElementToLevel(element.name, '', 50, 120, '', element.positionX, element.positionY, 'flex-end', true)
             break;
         case 'board':
-            createElementToLevel('board', 120, 48, 'board.pngs', element.positionX, element.positionY, 'flex-end', false)
+            createElementToLevel(element.name, '', 120, 48, 'board.pngs', element.positionX, element.positionY, 'flex-end', false)
             break;
         case 'ventilador':
-            createElementToLevel('ventilador', 82, 56, 'ventilador.pngs', element.positionX, element.positionY, 'flex-start', false)
+            createElementToLevel(element.name, '', 82, 56, 'ventilador.pngs', element.positionX, element.positionY, 'flex-start', false)
+            break;
+        case 'door':
+            createElementToLevel(element.name, element.index, 62, 125, 'doors.pngs', element.positionX, element.positionY, 'flex-start', true)    
             break;
 
+    }
+
+}
+
+// ==================   FUNCTIONS CREATE ELEMENETS   ==========================
+function placeContent(content) {
+    var level = document.getElementById('level');
+    level.appendChild(content)
+}
+
+
+function createElementToLevel(name, index, width, height, img, positionX, positionY, flex, pushInObject) {
+    var obj = document.createElement('div');
+    obj.id = name + index;
+    obj.style = 'width: ' + width + 'px; height: ' + height + 'px; left: ' + positionX + 'px; top: ' + positionY + 'px; display: flex; align-self: ' + flex + '; background-image: url(' + img + '); position:relative; '
+    placeContent(obj);
+    if (pushInObject) {
+        var element = {
+            id: obj.id,
+            position: obj.style.left,
+            width: obj.style.width
+        }
+        elementsInteract.push(element);
     }
 }
 
-function doorsConstructor(door) {
-    var elementDoor = document.createElement('div');
-    elementDoor.id = 'door' + index;
-    elementDoor.setAttribute('style', 'left: ' + door.positionX + 'px; width: 62px; height: 125px;')
-    placeContent(elementDoor);
-    var doorObj = {
-        id: elementDoor.id,
-        position: elementDoor.style.left,
-        width: elementDoor.style.width,
-        doorOut: door.out
-    }
-    elementsInteract.push(doorObj)
+
+
+
+
+
+
+
 
 
 
