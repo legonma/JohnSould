@@ -1,17 +1,22 @@
+var macetaTemplate = {
+    name: 'macetaAmarilla',
+    positionX: -290,
+    positionY: -0
+}
+
 var stage = [{
     level: 1,
     scene: {
         width: 705,
         height: 200
     },
-    elementsOverCharacter: [{
-        name: 'macetaAmarilla',
-        positionX: -290,
-        positionY: -0
-    }],
-    character: true,
-    elementsUnderCharacter: [
-        {   name: 'deskOfficer',
+    elementsOverCharacter: [Object.assign({}, macetaTemplate)],
+    character: {
+        top: 60,
+        left: 0
+    },
+    elementsUnderCharacter: [{
+            name: 'deskOfficer',
             positionX: 320,
             positionY: 0,
             observation: [
@@ -24,34 +29,44 @@ var stage = [{
                 'hi, im new here, my name is john where is my office',
                 'you are the same guy in the picture',
                 'where is the bathroom'
-            ] 
+            ]
         },
-        {   name: 'door',
+        {
+            name: 'door',
             index: 1,
             positionX: 522,
-            out: 606
+            out: 606,
+            observation: [
+                'Here sayd "ONLY PERSONAL"...',
+                'I take all cases to personal, so...'
+            ]
         },
-        {   name: 'door',
+        {
+            name: 'door',
             index: 2,
             positionX: 606,
-            out: 522
-        },        
-        {   name: 'board',
+            out: 522,
+            observation: [
+                'Trap.. Chrick.. Click..',
+                'I think is lock'
+            ]
+        },
+        {
+            name: 'board',
             positionX: 70,
             positionY: -80
         },
-        {   name: 'ventilador',
+        {
+            name: 'ventilador',
             positionX: 60,
             positionY: -3
         },
-        {   name: 'ventilador',
+        {
+            name: 'ventilador',
             positionX: 180,
             positionY: -3
         }
-    ],
-    dialogs: [{
-        name: 'deskOfficer'
-    }]
+    ]
 }]
 
 
@@ -103,19 +118,18 @@ function getElementsObj(element) {
             createElementToLevel(element.name, '', 82, 56, 'ventilador.pngs', element.positionX, element.positionY, 'flex-start', false)
             break;
         case 'door':
-            createElementToLevel(element.name, element.index, 62, 125, 'doors.pngs', element.positionX, element.positionY, 'flex-start', true)    
+            createElementToLevel(element.name, element.index, 62, 125, 'doors.pngs', element.positionX, element.positionY, 'flex-end', true)
             break;
 
     }
 
 }
 
-// ==================   FUNCTIONS CREATE ELEMENETS   ==========================
+// ==================   FUNCTIONS CREATE ELEMENETS ON SCENE   ==========================
 function placeContent(content) {
     var level = document.getElementById('level');
     level.appendChild(content)
 }
-
 
 function createElementToLevel(name, index, width, height, img, positionX, positionY, flex, pushInObject) {
     var obj = document.createElement('div');
@@ -132,8 +146,114 @@ function createElementToLevel(name, index, width, height, img, positionX, positi
     }
 }
 
+function checkIfElementIsPresent(player) {
+    var playerLocation = parseInt(player.style.left);
+    for (var i = 0; i < elementsInteract.length; i++) {
+        var element = elementsInteract[i];
+        if (objectsAreInPosition(playerLocation, element)) {
+            dialogWhenPressUp(player, element);
+        }
+    }
+
+    function objectsAreInPosition(playerLocation, element) {
+        var intervalStart = parseInt(document.getElementById(element.id).style.left);
+        var intervalEnd = intervalStart + parseInt(document.getElementById(element.id).style.width);
+        return playerLocation >= intervalStart && playerLocation <= intervalEnd;
+    }
+
+    function dialogWhenPressUp(player, element) {
+        switch (element.id) {
+            case 'door1':
+                var dialog = [
+                    'Here sayd "ONLY PERSONAL"...',
+                    'I take all cases to personal, so...'
+                ];
+                setTime(dialog);
+                break;
+            case 'door2':
+                var dialog = [
+                    'Trap.. Chrick.. Click..',
+                    'I think is lock'
+                ];
+                setTime(dialog);
+                break;
+            case 'deskOfficer':
+                var dialog = [
+                    'This is a policeman....',
+                    'He have a picture of the emploier of month...',
+                    'like mcdonals but with a gun...',
+                    'maeby, he know how where is my new office.'
+                ];
+                setTime(dialog);
+                break;
+            default:
+                var dialog = ['I do not anything to sayd']
+                setTime(dialog);
+                break;
+        }
+    }
 
 
+
+    // =======================  CHARACTER  ===========================
+    function character() {
+        var character = document.createElement('div');
+        character.id = 'characterBox';
+        character.style = 'top: ' + character.top + 'px; left: ' + character.left + 'px;'
+        var spriteBox = document.createElement('div');
+        spriteBox.id = 'spriteBox';
+        //		spriteBox.style = 'background-position: 0px 0px; animation: steyCharacterAnimation 3s steps(8) infinite;';
+        character.appendChild(spriteBox);
+        placeContent(character)
+    }
+
+
+    function characterController() {
+        var player = document.getElementById('characterBox')
+        var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
+        var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
+        console.log('roomLimits: ' + roomLimits)
+        var walk = -80;
+        var countSteps = 1;
+        document.addEventListener('keydown', function listener(e) {
+            if (!stopMoveEvent) {
+                if (!player.style.left) {
+                    player.style.left = '0px'
+                }
+
+                var left = parseInt(player.style.left);
+                var transform = player.style.transform;
+
+                if (e.key === 'ArrowRight' && left < roomLimits) {
+                    console.log(countSteps)
+                    player.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
+                    countSteps === 6 ? countSteps = 1 : countSteps++;
+                    player.style.left = (left + 10) + 'px'
+                }
+
+                if (e.key === 'ArrowLeft' && left > 0) {
+                    player.setAttribute('style', 'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
+                    countSteps === 6 ? countSteps = 1 : countSteps++;
+                    player.style.left = (left - 10) + 'px'
+                }
+
+                //Actions
+                if (e.key === 'ArrowUp') {
+                    checkIfElementIsPresent(player, 'ArrowUp');
+                }
+
+                if (e.key === 'ArrowDown') {
+                    player.style = 'animation: steyCharacterAnimation 3s steps(8) infinite;'
+                    player.style.left = left + 'px'
+                    player.style.transform = transform;
+                }
+
+                if (e.keyCode === 32) {
+                    defineActionWhenPressKey(player, 'Space');
+                }
+            }
+        })
+    }
 
 
 
