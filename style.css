@@ -73,33 +73,50 @@ p {
 
 #door1,
 #door2 {
-    /*	
-	background-image: url(doors.png);
-*/
+    background-image: url('img/doors.pngs');
     background-repeat: no-repeat;
-}
-
-#door1 {
-    background-color: brown;
-    background-position: 0px 0px;
-    position: absolute;
     display: flex;
     align-self: flex-end;
-}
-
-#door2 {
     position: absolute;
     background-color: brown;
-    display: flex;
-    align-self: flex-end;
+    width: 62px;
+    height: 125px;
 }
+
+#door1 {}
+
+#door2 {}
 
 #ventilador {
+    display: flex;
+    align-self: flex-start;
+    width: 82px;
+    height: 56px;
+    background-image: url('img/ventilador.pngs');
     animation: ventiladorAnimation 1s steps(10) infinite;
+}
+
+#macetaAmarilla {
+    width: 46px;
+    height: 70px;
+    display: flex;
+    align-self: flex-end;
+    position: relative;
+    background-image: url('img/maceta.pngs');
+}
+
+#board {
+    display: flex;
+    position: relative;
+    width: 120px;
+    height: 48px;
+    background-image: url('img/board.pngs');
 }
 
 #deskOfficer {
     background-color: cadetblue;
+    width: 50px;
+    height: 120px;
 }
 
 .question {

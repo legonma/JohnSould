@@ -1,16 +1,15 @@
-var macetaTemplate = {
-    name: 'macetaAmarilla',
-    positionX: -290,
-    positionY: -0
-}
-
 var stage = [{
     level: 1,
     scene: {
         width: 705,
         height: 200
     },
-    elementsOverCharacter: [Object.assign({}, macetaTemplate)],
+    elementsOverCharacter: [{
+        name: 'macetaAmarilla',
+        positionX: -290,
+        positionY: -0,
+        interact: false,
+    }],
     character: {
         top: 60,
         left: 0
@@ -19,6 +18,7 @@ var stage = [{
             name: 'deskOfficer',
             positionX: 320,
             positionY: 0,
+            interact: true,
             observation: [
                 'This is a policeman...',
                 'He have a picture of the emploier of month...',
@@ -36,6 +36,7 @@ var stage = [{
             index: 1,
             positionX: 522,
             out: 606,
+            interact: true,
             observation: [
                 'Here sayd "ONLY PERSONAL"...',
                 'I take all cases to personal, so...'
@@ -46,6 +47,7 @@ var stage = [{
             index: 2,
             positionX: 606,
             out: 522,
+            interact: true,
             observation: [
                 'Trap.. Chrick.. Click..',
                 'I think is lock'
@@ -54,17 +56,20 @@ var stage = [{
         {
             name: 'board',
             positionX: 70,
-            positionY: -80
+            positionY: -80,
+            interact: false,
         },
         {
             name: 'ventilador',
             positionX: 60,
-            positionY: -3
+            positionY: -3,
+            interact: false,
         },
         {
             name: 'ventilador',
             positionX: 180,
-            positionY: -3
+            positionY: -3,
+            interact: false,
         }
     ]
 }]
@@ -102,28 +107,17 @@ function centerElementIn(obj, backObj) {
 }
 
 
-// ==================  CREATE ELEMENETS ON SCHENE  ==========================
-function getElementsObj(element) {
-    switch (element.name) {
-        case 'macetaAmarilla':
-            createElementToLevel(element.name, '', 46, 70, 'maceta.pngs', element.positionX, element.positionY, 'flex-end', false);
-            break;
-        case 'deskOfficer':
-            createElementToLevel(element.name, '', 50, 120, '', element.positionX, element.positionY, 'flex-end', true)
-            break;
-        case 'board':
-            createElementToLevel(element.name, '', 120, 48, 'board.pngs', element.positionX, element.positionY, 'flex-end', false)
-            break;
-        case 'ventilador':
-            createElementToLevel(element.name, '', 82, 56, 'ventilador.pngs', element.positionX, element.positionY, 'flex-start', false)
-            break;
-        case 'door':
-            createElementToLevel(element.name, element.index, 62, 125, 'doors.pngs', element.positionX, element.positionY, 'flex-end', true)
-            break;
-
+// ==================  CREATING ELEMENETS TO SCENE  ==========================
+function createScene(stage, level) {
+    for (i in stage[level]) {
+        switch (stage[level].hasOwnProperty(i)) {
+            case i === 'elementsUnderCharacter':
+        }
     }
-
 }
+createDomElement(element);
+characterController();
+
 
 // ==================   FUNCTIONS CREATE ELEMENETS ON SCENE   ==========================
 function placeContent(content) {
@@ -131,17 +125,12 @@ function placeContent(content) {
     level.appendChild(content)
 }
 
-function createElementToLevel(name, index, width, height, img, positionX, positionY, flex, pushInObject) {
-    var obj = document.createElement('div');
-    obj.id = name + index;
-    obj.style = 'width: ' + width + 'px; height: ' + height + 'px; left: ' + positionX + 'px; top: ' + positionY + 'px; display: flex; align-self: ' + flex + '; background-image: url(' + img + '); position:relative; '
-    placeContent(obj);
-    if (pushInObject) {
-        var element = {
-            id: obj.id,
-            position: obj.style.left,
-            width: obj.style.width
-        }
+function createDomElement(element) {
+    var div = document.createElement('div');
+    div.id = name + index;
+    div.style = 'left: ' + element.positionX + 'px; top: ' + element.positionY + 'px;';
+    placeContent(div);
+    if (element.interact) {
         elementsInteract.push(element);
     }
 }
@@ -255,9 +244,99 @@ function checkIfElementIsPresent(player) {
         })
     }
 
+    // ============== MODS ===============================00
+    function questionMode() {
+        stopMoveEvent = true;
+        stopQuestionEvent = false;
+        var i = 0;
+        document.addEventListener('keydown', function questions(e) {
+            var allQuestions = document.getElementById('textArea').childNodes
+            console.log(e)
+            if (!stopQuestionEvent) {
+                if (e.key === 'ArrowUp' && i > 0) {
+                    allQuestions[i].style.backgroundColor = '';
+                    i--;
+                    allQuestions[i].style.backgroundColor = 'red';
+                }
+                if (e.key === 'ArrowDown' && i < (allQuestions.length - 1)) {
+                    allQuestions[i].style.backgroundColor = '';
+                    i++;
+                    allQuestions[i].style.backgroundColor = 'red';
+                }
 
+                if (e.key === 'Enter') {
+                    var dialog = allQuestions[i].innerText;
+                    removeElements('textArea')
+                    setTime([dialog])
+                    stopQuestionEvent = true;
+                    stopMoveEvent = false;
+                }
+            }
+        })
+    }
 
+    function removeElements(containerElement) {
+        var container = document.getElementById(containerElement);
+        while (container.firstChild)
+            container.removeChild(container.firstChild)
+    }
 
+    function setTime(array) {
+        var dialogs = array.reverse()
+        var text = document.createElement('p');
+        text.id = 'text';
+        document.getElementById('textArea').appendChild(text);
+        var finish = setInterval(() => {
+            if (dialogs.length === 0) {
+                clearInterval(finish);
+                removeElements('textArea');
+            } else {
+                printInDialogBox(dialogs.pop())
+            }
+        }, 2000)
+    }
+
+    function createElementP(index, dialog) {
+        var question = document.createElement('p');
+        question.id = 'question' + index;
+        if (!index) {
+            question.style.backgroundColor = 'red';
+        }
+        document.getElementById('textArea').appendChild(question);
+        var ponerTexto = document.getElementById(question.id);
+        ponerTexto.innerText = dialog;
+    }
+
+    function printQuestionInTextArea(array) {
+        var dialogs = array.reverse()
+        var index = 0;
+        var question = setInterval(() => {
+            if (dialogs.length) {
+                createElementP(index++, dialogs.pop())
+            } else {
+                clearInterval(question);
+            }
+        })
+    }
+
+    function printInDialogBox(line) {
+        var text = document.getElementById('text');
+        text.innerText = line;
+    }
+
+    function showDialog(element, event) {
+        if (/deskOfficer/.test(element.id)) {
+            var array = [
+                'hi, im new here, my name is john where is my office',
+                'you are the same guy in the picture',
+                'where is the bathroom'
+            ];
+            if (event === 'Space') {
+                printQuestionInTextArea(array);
+                questionMode()
+            }
+        }
+    }
 
 
 
