@@ -109,13 +109,28 @@ function centerElementIn(obj, backObj) {
 
 // ==================  CREATING ELEMENETS TO SCENE  ==========================
 function createScene(stage, level) {
+    var stringStage = 'stage['+ level +'].'
     for (i in stage[level]) {
-        switch (stage[level].hasOwnProperty(i)) {
-            case i === 'elementsUnderCharacter':
+            switch(i) {
+                case 'scene':
+                    createElementBackground(stage[level].scene);
+                    break;
+                case 'elementsOverCharacter':
+                    createDomElement(stage[level].elementsOverCharacter)
+                    break;
+                case 'character':
+                    character(stage[level].character);
+                    break;
+                case 'elementsUnderCharacter':
+                    createDomElement(stage[level].elementsUnderCharacter)
+                    break;
+                default:
+                break;            
+            }            
         }
     }
-}
-createDomElement(element);
+    
+createScene(stage, 0);    
 characterController();
 
 
