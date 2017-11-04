@@ -117,6 +117,9 @@ p {
     background-color: cadetblue;
     width: 50px;
     height: 120px;
+    display: flex;
+    align-self: flex-end;
+    position: relative;
 }
 
 .question {
