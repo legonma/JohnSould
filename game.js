@@ -162,12 +162,9 @@ function placeContent(content) {
 
 
 function checkIfElementIsPresent(player) {
-    console.log(player);
     var playerLocation = parseInt(player.style.left);
-    console.log(playerLocation)
     for (var i = 0; i < elementsInteract.length; i++) {
         var element = elementsInteract[i];
-        console.log(element)
         if (objectsAreInPosition(playerLocation, element)) {
             dialogWhenPressUp(player, element);
         }
@@ -176,40 +173,14 @@ function checkIfElementIsPresent(player) {
 
     function objectsAreInPosition(playerLocation, element) {
         var intervalStart = element.positionX;
-        var intervalEnd = intervalStart + parseInt(document.getElementById(element.name).style.width);
+        var id = element.index ? element.name + element.index : element.name;
+        var intervalEnd = intervalStart + parseInt(document.getElementById(id).offsetWidth);
+        console.log(id)
         return playerLocation >= intervalStart && playerLocation <= intervalEnd;
     }
 
     function dialogWhenPressUp(player, element) {
-        switch (element.name) {
-            case 'door1':
-                var dialog = [
-                    'Here sayd "ONLY PERSONAL"...',
-                    'I take all cases to personal, so...'
-                ];
-                setTime(dialog);
-                break;
-            case 'door2':
-                var dialog = [
-                    'Trap.. Chrick.. Click..',
-                    'I think is lock'
-                ];
-                setTime(dialog);
-                break;
-            case 'deskOfficer':
-                var dialog = [
-                    'This is a policeman....',
-                    'He have a picture of the emploier of month...',
-                    'like mcdonals but with a gun...',
-                    'maeby, he know how where is my new office.'
-                ];
-                setTime(dialog);
-                break;
-            default:
-                var dialog = ['I do not anything to sayd']
-                setTime(dialog);
-                break;
-        }
+        setTime(element.observation);
     }
 
 
@@ -244,7 +215,7 @@ function checkIfElementIsPresent(player) {
                 var transform = player.style.transform;
 
                 if (e.key === 'ArrowRight' && left < roomLimits) {
-                    console.log(countSteps)
+                    //para contar los steps del sprite console.log(countSteps)
                     player.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                     countSteps === 6 ? countSteps = 1 : countSteps++;
                     player.style.left = (left + 10) + 'px'

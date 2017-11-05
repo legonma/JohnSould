@@ -83,10 +83,6 @@ p {
     height: 125px;
 }
 
-#door1 {}
-
-#door2 {}
-
 #ventilador {
     display: flex;
     align-self: flex-start;
