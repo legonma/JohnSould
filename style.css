@@ -2,14 +2,13 @@ p {
     font-family: 'Share Tech Mono';
     font-size: 14px;
     color: white;
-    background-color: grey;
 }
 
 #canvas {
     width: 1024px;
     height: 768px;
     position: absolute;
-    background-color: black;
+    background-color: #24292b;
     display: flex;
     justify-content: center;
 }
@@ -21,14 +20,14 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(155, 235, 59, 1);
-    /*	
-	background-image: url(img/background1.png)
-*/
+    background-color: rgba(155, 235, 59, 0);
+    background-image: url('img/background1.png');
+    box-shadow: -1px 11px 53px -2px rgba(0,0,0,0.49);
+    
 }
 
 #textArea {
-    width: 560px;
+    /*width: 560px;*/
     background-color: rgba(255, 255, 255, 0);
     display: flex;
     position: absolute;
@@ -40,7 +39,7 @@ p {
 
 #level {
     position: relative;
-    background-color: rgba(255, 235, 59, 1);
+    background-color: rgba(255, 235, 59, 0);
     display: flex;
 }
 
@@ -51,19 +50,13 @@ p {
     display: flex;
     align-self: center;
     left: -17px;
-    background-color: rgb(206, 51, 51, 0);
-    /*	
-	background-image: url(characterSprite.png);
-*/
+	background-image: url('img/characterSprite.png');
+    background-repeat: no-repeat;
+    background-position: 0px 0px;
 }
 
 #characterBox {
-    /*	
-        background-image: url(characterSprite.png);
-    */
-    background-repeat: no-repeat;
-    background-position: 0px 0px;
-    background-color: rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 0);
     width: 48px;
     height: 120px;
     position: absolute;
@@ -73,22 +66,23 @@ p {
 
 #door1,
 #door2 {
-    background-image: url('img/doors.pngs');
+    background-image: url('img/doors.png');
     background-repeat: no-repeat;
     display: flex;
     align-self: flex-end;
     position: absolute;
-    background-color: brown;
+    background-color: rgba(0, 0, 0, 0);
     width: 62px;
     height: 125px;
 }
 
 #ventilador {
     display: flex;
+    position: relative;
     align-self: flex-start;
     width: 82px;
     height: 56px;
-    background-image: url('img/ventilador.pngs');
+    background-image: url('img/ventilador.png');
     animation: ventiladorAnimation 1s steps(10) infinite;
 }
 
@@ -98,19 +92,18 @@ p {
     display: flex;
     align-self: flex-end;
     position: relative;
-    background-image: url('img/maceta.pngs');
+    background-image: url('img/maceta.png');
 }
 
 #board {
-    display: flex;
     position: relative;
     width: 120px;
     height: 48px;
-    background-image: url('img/board.pngs');
+    background-image: url('img/board.png');
 }
 
 #deskOfficer {
-    background-color: cadetblue;
+    background-color: rgba(10, 45, 33, 0);
     width: 50px;
     height: 120px;
     display: flex;

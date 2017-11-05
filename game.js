@@ -22,8 +22,7 @@ var stage = [{
             ]
         },
         {
-            name: 'door',
-            index: 1,
+            name: 'door1',
             positionX: 522,
             out: 606,
             interact: true,
@@ -33,8 +32,7 @@ var stage = [{
             ]
         },
         {
-            name: 'door',
-            index: 2,
+            name: 'door2',
             positionX: 606,
             out: 522,
             interact: true,
@@ -45,8 +43,8 @@ var stage = [{
         },
         {
             name: 'board',
-            positionX: 70,
-            positionY: -80,
+            positionX: 30,
+            positionY: 40,
             interact: false,
         },
         {
@@ -68,7 +66,7 @@ var stage = [{
     },
     elementsOverCharacter: [{
         name: 'macetaAmarilla',
-        positionX: -290,
+        positionX: -335,
         positionY: -0,
         interact: false,
     }]
@@ -147,7 +145,7 @@ function centerElementIn(obj, backObj) {
 // ==================   FUNCTIONS CREATE ELEMENETS ON SCENE   ==========================
 function createDomElement(element) {
     var div = document.createElement('div');
-    div.id = !!element.index ? element.name + element.index : element.name;
+    div.id = element.name;
     div.style = 'left: ' + element.positionX + 'px; top: ' + element.positionY + 'px;';
     placeContent(div);
     if (element.interact) {
@@ -173,7 +171,7 @@ function checkIfElementIsPresent(player) {
 
     function objectsAreInPosition(playerLocation, element) {
         var intervalStart = element.positionX;
-        var id = element.index ? element.name + element.index : element.name;
+        var id = element.name;
         var intervalEnd = intervalStart + parseInt(document.getElementById(id).offsetWidth);
         console.log(id)
         return playerLocation >= intervalStart && playerLocation <= intervalEnd;
@@ -200,6 +198,7 @@ function checkIfElementIsPresent(player) {
 
     function characterController() {
         var player = document.getElementById('characterBox')
+        var playerSprite = document.getElementById('spriteBox')
         var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
         var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
         console.log('roomLimits: ' + roomLimits)
@@ -216,36 +215,57 @@ function checkIfElementIsPresent(player) {
 
                 if (e.key === 'ArrowRight' && left < roomLimits) {
                     //para contar los steps del sprite console.log(countSteps)
-                    player.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
+                    playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                     countSteps === 6 ? countSteps = 1 : countSteps++;
                     player.style.left = (left + 10) + 'px'
                 }
 
                 if (e.key === 'ArrowLeft' && left > 0) {
-                    player.setAttribute('style', 'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
+                    playerSprite.setAttribute('style', 'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                     countSteps === 6 ? countSteps = 1 : countSteps++;
                     player.style.left = (left - 10) + 'px'
                 }
 
                 //Actions
                 if (e.key === 'ArrowUp') {
+                    playerSprite.setAttribute('style', 'background-position: -240px -480px')
                     checkIfElementIsPresent(player, 'ArrowUp');
+
                 }
 
                 if (e.key === 'ArrowDown') {
-                    player.style = 'animation: steyCharacterAnimation 3s steps(8) infinite;'
+                    playerSprite.style = 'animation: steyCharacterAnimation 3s steps(8) infinite;'
                     player.style.left = left + 'px'
                     player.style.transform = transform;
                 }
 
                 if (e.keyCode === 32) {
-                    defineActionWhenPressKey(player, 'Space');
+                    defineActionWhenPressSpaceKey(player);
                 }
             }
         })
     }
 
-    // ============== MODS ===============================00
+    // ============== MODS ===============================
+
+    function defineActionWhenPressSpaceKey(player) {
+        var playerPosition = parseInt(player.style.left);
+        for (i = 0; i < elementsInteract.length; i++) {
+            var element = elementsInteract[i];
+            if (objectsAreInPosition(playerPosition, element)) {
+                if (/door[\s\S]/.test(element.name)) {
+                    var doorOut = element.out;
+                    player.setAttribute('style', 'left:' + doorOut + 'px');
+                }
+                if (/deskOfficer/.test(element.name)) {
+                    var dialogElement = element.dialogs.slice();
+                    printQuestionInTextArea(element.dialogs)
+                    questionMode()            
+                }
+            }
+        }
+    }
+
     function questionMode() {
         stopMoveEvent = true;
         stopQuestionEvent = false;
@@ -282,15 +302,18 @@ function checkIfElementIsPresent(player) {
             container.removeChild(container.firstChild)
     }
 
-    function setTime(array) {
+    function setTime(dialogElement) {
+        array = dialogElement.slice()
         var dialogs = array.reverse()
         var text = document.createElement('p');
         text.id = 'text';
         document.getElementById('textArea').appendChild(text);
+        stopMoveEvent = true;
         var finish = setInterval(() => {
             if (dialogs.length === 0) {
                 clearInterval(finish);
                 removeElements('textArea');
+                stopMoveEvent = false;
             } else {
                 printInDialogBox(dialogs.pop())
             }
@@ -308,8 +331,9 @@ function checkIfElementIsPresent(player) {
         ponerTexto.innerText = dialog;
     }
 
-    function printQuestionInTextArea(array) {
-        var dialogs = array.reverse()
+    function printQuestionInTextArea(dialogElement) {
+        var array = dialogElement.slice();
+        var dialogs = array.reverse();
         var index = 0;
         var question = setInterval(() => {
             if (dialogs.length) {
@@ -319,22 +343,8 @@ function checkIfElementIsPresent(player) {
             }
         })
     }
-
+    //poner en pausa cuando entra el dialogo
     function printInDialogBox(line) {
         var text = document.getElementById('text');
         text.innerText = line;
-    }
-
-    function showDialog(element, event) {
-        if (/deskOfficer/.test(element.id)) {
-            var array = [
-                'hi, im new here, my name is john where is my office',
-                'you are the same guy in the picture',
-                'where is the bathroom'
-            ];
-            if (event === 'Space') {
-                printQuestionInTextArea(array);
-                questionMode()
-            }
-        }
     }
