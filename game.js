@@ -146,6 +146,8 @@ var stage = [{
 var elementsInteract = [];
 var stopMoveEvent = false;
 var stopQuestionEvent = false;
+var firstSteps;
+var secondSteps;
 window.onload = function() { 
     createScene(stage, 0);    
     characterController(stage);
@@ -154,7 +156,9 @@ window.onload = function() {
 
 // ==================  CREATING ELEMENETS TO SCENE  ==========================
 function createScene(stage, level) {
-    var stringStage = 'stage['+ level +'].'
+    var stringStage = 'stage['+ level +'].';
+    firstSteps = new Audio('Footstep01.wav')
+    secondSteps = new Audio('Footstep02.wav')
     for (i in stage[level]) {
             switch(i) {
                 case 'scene':
@@ -308,6 +312,7 @@ function openDoors(player) {
                     playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                     countSteps === 6 ? countSteps = 1 : countSteps++;
                     player.style.left = (left + 10) + 'px'
+                    !(countSteps % 2) ? firstSteps.play() : secondSteps.play();
                     document.addEventListener('keyup', function listenerUp(j) {
                         playerSprite.style = 'animation: steyCharacterAnimation 3s steps(8) infinite;'
                         player.style.transform = transform;
@@ -319,6 +324,7 @@ function openDoors(player) {
                     playerSprite.setAttribute('style', 'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                     countSteps === 6 ? countSteps = 1 : countSteps++;
                     player.style.left = (left - 10) + 'px'
+                    !(countSteps % 2) ? firstSteps.play() : secondSteps.play();                    
                     document.addEventListener('keyup', function listenerUp(j) {
                         playerSprite.style = 'transform: scaleX(-1); animation: steyCharacterAnimation 3s steps(8) infinite;'
                         player.style.transform = transform;
