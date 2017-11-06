@@ -21,8 +21,8 @@ p {
     justify-content: center;
     align-items: center;
     background-color: rgba(155, 235, 59, 0);
-    background-image: url('img/background1.png');
-    box-shadow: -1px 11px 53px -2px rgba(0,0,0,0.49);
+    background-image: url('img/background1.pngs');
+    box-shadow: -1px 11px 53px -2px rgba(0, 0, 0, 0.49);
 }
 
 #background2 {
@@ -33,10 +33,9 @@ p {
     justify-content: center;
     align-items: center;
     background-color: rgba(155, 235, 59, 0);
-    background-image: url('img/background2.png');
-    box-shadow: -1px 11px 53px -2px rgba(0,0,0,0.49);
+    background-image: url('img/background2.pngs');
+    box-shadow: -1px 11px 53px -2px rgba(0, 0, 0, 0.49);
 }
-
 
 #lightBackground {
     box-shadow: 0px -150px 374px 30px rgba(255, 255, 255, 0.3);
@@ -55,7 +54,7 @@ p {
 
 #level {
     position: relative;
-    background-color: rgba(255, 235, 59, 0);
+    background-color: rgba(255, 235, 59, 1);
     display: flex;
 }
 
@@ -66,13 +65,13 @@ p {
     display: flex;
     align-self: center;
     left: -17px;
-	background-image: url('img/characterSprite.png');
+    background-image: url('img/characterSprite.png');
     background-repeat: no-repeat;
     background-position: 0px 0px;
 }
 
 #characterBox {
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 1);
     width: 48px;
     height: 120px;
     position: absolute;
@@ -81,8 +80,8 @@ p {
 }
 
 #atendedor {
-    background-image: url('img/atendedor.png');
-    background-color: rgba(10, 45, 33, 0);
+    background-image: url('img/atendedor.pngs');
+    background-color: rgba(10, 45, 33, 1);
     width: 96px;
     height: 91px;
     display: flex;
@@ -90,12 +89,14 @@ p {
     position: relative;
 }
 
-#door1, #door2, #door3 {
-    background-image: url('img/doors.png');
+#door1,
+#door2,
+#door3 {
+    background-image: url('img/doors.pngs');
     display: flex;
     align-self: flex-end;
     position: absolute;
-    background-color: rgba(0, 0, 0, 0);
+    background-color: rgba(0, 0, 0, 1);
     width: 62px;
     height: 125px;
 }
@@ -106,12 +107,12 @@ p {
     align-self: flex-start;
     width: 82px;
     height: 56px;
-    background-image: url('img/ventilador.png');
+    background-image: url('img/Ventilador.pngs');
     animation: ventiladorAnimation 1s steps(10) infinite;
 }
 
 #greenSign {
-    background-image: url('img/greenSign.png');
+    background-image: url('img/greenSign.pngs');
     width: 43px;
     height: 19px;
     position: absolute;
@@ -123,18 +124,18 @@ p {
     display: flex;
     align-self: flex-end;
     position: relative;
-    background-image: url('img/maceta.png');
+    background-image: url('img/Maceta.pngs');
 }
 
 #board {
     position: relative;
     width: 120px;
     height: 48px;
-    background-image: url('img/board.png');
+    background-image: url('img/Board.pngs');
 }
 
 #deskOfficer {
-    background-color: rgba(10, 45, 33, 0);
+    background-color: rgba(10, 45, 33, 1);
     width: 50px;
     height: 120px;
     display: flex;
