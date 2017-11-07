@@ -155,6 +155,12 @@ p {
     }
 }
 
+@keyframes steyWithGunAnimation {
+    100% {
+        background-position-x: -400px
+    }
+}
+
 @keyframes walkCharacterAnimation {
     100% {
         background-position-x: -656px;

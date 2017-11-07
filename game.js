@@ -9,7 +9,8 @@ var stage = [{
         elementsUnderCharacter: [{
                 name: 'door1',
                 positionX: 522,
-                out: 1,
+                levelOut: 1,
+                positionOut: 522,
                 interact: true,
                 lock: false,
                 style: '62px',
@@ -65,8 +66,7 @@ var stage = [{
             }
         ],
         character: {
-            top: 60,
-            left: 0
+            top: 60
         },
         elementsOverCharacter: [{
             name: 'macetaAmarilla',
@@ -86,6 +86,8 @@ var stage = [{
         elementsUnderCharacter: [{
                 name: 'door2',
                 positionX: 522,
+                levelOut: 0,
+                positionOut: 522,
                 interact: true,
                 lock: false,
                 style: '62px',
@@ -98,7 +100,7 @@ var stage = [{
                 name: 'door3',
                 positionX: 606,
                 interact: true,
-                lock: false,
+                lock: true,
                 style: '124px',
                 observation: [
                     'Trap.. Chrick.. Click..',
@@ -137,8 +139,7 @@ var stage = [{
         ],
 
         character: {
-            top: 60,
-            left: 522
+            top: 60
         }
     }
 ]
@@ -151,6 +152,7 @@ var stopQuestionEvent = false;
 var pickupGun = false;
 var firstSteps;
 var secondSteps;
+var characterPosition = 0;
 window.onload = function() {
     createScene(stage, 0);
     characterController(stage);
@@ -160,8 +162,11 @@ window.onload = function() {
 // ==================  CREATING ELEMENETS TO SCENE  ==========================
 function createScene(stage, level) {
     var stringStage = 'stage[' + level + '].';
-    firstSteps = new Audio('Footstep01.wav')
-    secondSteps = new Audio('Footstep02.wav')
+    firstSteps = new Audio('Footstep01.wav');
+    secondSteps = new Audio('Footstep02.wav');
+    pistolShotSound = new Audio('pistolShot.mp3');
+    clipFall = new Audio('clipFall.mp3');
+    openThings = new Audio('openThings.wav');
     for (i in stage[level]) {
         switch (i) {
             case 'scene':
@@ -260,6 +265,7 @@ function openDoors(player) {
         var element = elementsInteract[i];
         if (objectsAreInPosition(playerLocation, element)) {
             if (element.name === 'door1' || element.name === 'door2' || element.name === 'door3' && !element.lock) {
+                //openThings.play();
                 document.getElementById(element.name).style.backgroundPosition = element.style;
             }
         } else {
@@ -285,7 +291,7 @@ function dialogWhenPressUp(player, element) {
 function character(characterObject) {
     var character = document.createElement('div');
     character.id = 'characterBox';
-    character.style = 'top: ' + characterObject.top + 'px; left: ' + characterObject.left + 'px;'
+    character.style = 'top: ' + characterObject.top + 'px; left: ' + characterPosition + 'px;'
     var spriteBox = document.createElement('div');
     spriteBox.id = 'spriteBox';
     //		spriteBox.style = 'background-position: 0px 0px; animation: steyCharacterAnimation 3s steps(8) infinite;';
@@ -295,26 +301,32 @@ function character(characterObject) {
 
 
 function characterController(stage) {
-    var player = document.getElementById('characterBox')
-    var playerSprite = document.getElementById('spriteBox')
-    var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
-    var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
-    console.log('roomLimits: ' + roomLimits)
     var walk = -80;
     var countSteps = 1;
+    var pickUpFrame = 0;
     var timmer;
+    var withGun = false;
+    var lastLeyPressRight = false;
     document.addEventListener('keyup', function listenerUp(j) {
+        var player = document.getElementById('characterBox')
+        var playerSprite = document.getElementById('spriteBox')
+        var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
+        var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
         if (j.key === 'ArrowRight' || j.key === 'ArrowLeft') {
             var transform = player.style.transform;
             timmer = setTimeout(function() {
                 var direction = j.key === 'ArrowRight' ? '1' : '-1';
-                playerSprite.setAttribute('style', 'transform: scaleX(' + direction + '); animation: steyCharacterAnimation 3s steps(8) infinite;');
+                var animation = withGun ? 'background-position-y: -480px; animation: steyWithGunAnimation 3s steps(5) infinite;' : 'animation: steyCharacterAnimation 3s steps(8) infinite;';
+                playerSprite.setAttribute('style', 'transform: scaleX(' + direction + ');' + animation);
                 player.style.transform = transform;
             }, 1000)
         }
     })
     document.addEventListener('keydown', function listener(e) {
-        console.log(e)
+        var player = document.getElementById('characterBox')
+        var playerSprite = document.getElementById('spriteBox')
+        var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
+        var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
         if (!stopMoveEvent) {
             if (!player.style.left) {
                 player.style.left = '0px'
@@ -323,6 +335,7 @@ function characterController(stage) {
             var left = parseInt(player.style.left);
             var transform = player.style.transform;
             if (e.key === 'ArrowRight' && left < roomLimits) {
+                lastLeyPressRight = true;
                 if (timmer) {
                     clearTimeout(timmer)
                     timmer = null;
@@ -341,6 +354,7 @@ function characterController(stage) {
             }
 
             if (e.key === 'ArrowLeft' && left > 0) {
+                lastLeyPressRight = false;
                 if (timmer) {
                     clearTimeout(timmer)
                     timmer = null;
@@ -371,10 +385,40 @@ function characterController(stage) {
             }
 
             if (e.keyCode === 32) {
-                defineActionWhenPressSpaceKey(player, stage);
+                if (!withGun) {
+                    defineActionWhenPressSpaceKey(player, stage);
+                } else {
+                    fireGun(player, playerSprite, lastLeyPressRight);
+                }
+
             }
 
             if (e.key === 'r') {
+                stopMoveEvent = true;
+                if (!withGun) {
+                    var pickUpInterval = setInterval(() => {
+                        playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (-80 * pickUpFrame) + 'px -120px');
+                        if (pickUpFrame === 3) {
+                            stopMoveEvent = false;
+                            withGun = true;
+                            clearInterval(pickUpInterval);
+                        } else {
+                            pickUpFrame++;
+                        }
+                    }, 300);
+                } else {
+                    pickUpFrame = 3;
+                    var pickUpInterval = setInterval(() => {
+                        playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (-80 * pickUpFrame) + 'px -120px');
+                        if (!pickUpFrame) {
+                            stopMoveEvent = false;
+                            withGun = false;
+                            clearInterval(pickUpInterval);
+                        } else {
+                            pickUpFrame--;
+                        }
+                    }, 300);
+                }
                 //hacer la animacion del pickup Gun
                 pickupGun = !pickupGun;
             }
@@ -405,11 +449,13 @@ function defineActionWhenPressSpaceKey(player, stage) {
 }
 
 function doorAction(element, stage) {
-    if (element.out) {
+    debugger;
+    if (element.levelOut !== undefined) {
+        characterPosition = element.positionOut;
         elementsInteract = [];
         removeElements('canvas');
-        createScene(stage, element.out);
-        characterController(stage);
+        createScene(stage, element.levelOut);
+        //characterController(stage);
     }
 }
 
@@ -497,3 +543,29 @@ function printInDialogBox(line) {
 }
 
 //============================ FIRE MODE =========================
+
+function fireGun(player, playerSprite, lastLeyPressRight) {
+    stopMoveEvent = true;
+    fireFrame = 0;
+    var direction = lastLeyPressRight ? '1' : '-1';
+    var pickUpInterval = setInterval(() => {
+        playerSprite.setAttribute('style', 'transform: scaleX(' + direction + '); background-position: ' + (-320 + (-80 * fireFrame)) + 'px -120px');
+        if (fireFrame === 2) {
+            pistolShotSound.play();
+            createBullet();
+        }
+        if (fireFrame === 4) {
+            playerSprite.setAttribute('style', 'transform: scaleX(' + direction + '); background-position: ' + (-320) + 'px -120px');
+            clipFall.play();
+            stopMoveEvent = false;
+            withGun = true;
+            clearInterval(pickUpInterval);
+        } else {
+            fireFrame++;
+        }
+    }, 300);
+}
+
+function createBullet() {
+
+}
