@@ -21,7 +21,7 @@ p {
     justify-content: center;
     align-items: center;
     background-color: rgba(155, 235, 59, 0);
-    background-image: url('img/background1.pngs');
+    background-image: url('img/background1.png');
     box-shadow: -1px 11px 53px -2px rgba(0, 0, 0, 0.49);
 }
 
@@ -33,7 +33,7 @@ p {
     justify-content: center;
     align-items: center;
     background-color: rgba(155, 235, 59, 0);
-    background-image: url('img/background2.pngs');
+    background-image: url('img/background2.png');
     box-shadow: -1px 11px 53px -2px rgba(0, 0, 0, 0.49);
 }
 
@@ -54,7 +54,7 @@ p {
 
 #level {
     position: relative;
-    background-color: rgba(255, 235, 59, 1);
+    background-color: rgba(255, 235, 59, 0);
     display: flex;
 }
 
@@ -71,7 +71,7 @@ p {
 }
 
 #characterBox {
-    background-color: rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 0);
     width: 48px;
     height: 120px;
     position: absolute;
@@ -80,8 +80,8 @@ p {
 }
 
 #atendedor {
-    background-image: url('img/atendedor.pngs');
-    background-color: rgba(10, 45, 33, 1);
+    background-image: url('img/atendedor.png');
+    background-color: rgba(10, 45, 33, 0);
     width: 96px;
     height: 91px;
     display: flex;
@@ -92,11 +92,11 @@ p {
 #door1,
 #door2,
 #door3 {
-    background-image: url('img/doors.pngs');
+    background-image: url('img/doors.png');
     display: flex;
     align-self: flex-end;
     position: absolute;
-    background-color: rgba(0, 0, 0, 1);
+    background-color: rgba(0, 0, 0, 0 );
     width: 62px;
     height: 125px;
 }
@@ -107,12 +107,12 @@ p {
     align-self: flex-start;
     width: 82px;
     height: 56px;
-    background-image: url('img/Ventilador.pngs');
+    background-image: url('img/Ventilador.png');
     animation: ventiladorAnimation 1s steps(10) infinite;
 }
 
 #greenSign {
-    background-image: url('img/greenSign.pngs');
+    background-image: url('img/greenSign.png');
     width: 43px;
     height: 19px;
     position: absolute;
@@ -124,18 +124,18 @@ p {
     display: flex;
     align-self: flex-end;
     position: relative;
-    background-image: url('img/Maceta.pngs');
+    background-image: url('img/Maceta.png');
 }
 
 #board {
     position: relative;
     width: 120px;
     height: 48px;
-    background-image: url('img/Board.pngs');
+    background-image: url('img/Board.png');
 }
 
 #deskOfficer {
-    background-color: rgba(10, 45, 33, 1);
+    background-color: rgba(10, 45, 33, 0);
     width: 50px;
     height: 120px;
     display: flex;
