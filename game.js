@@ -148,11 +148,13 @@ var stage = [{
 
 var elementsInteract = [];
 var stopMoveEvent = false;
-var stopQuestionEvent = false;
+var stopQuestionEvent = true;
 var pickupGun = false;
 var firstSteps;
 var secondSteps;
 var characterPosition = 0;
+var allQuestions = [];
+var qs;
 window.onload = function() {
     createScene(stage, 0);
     characterController(stage);
@@ -312,7 +314,7 @@ function characterController(stage) {
         var playerSprite = document.getElementById('spriteBox')
         var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
         var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
-        if (j.key === 'ArrowRight' || j.key === 'ArrowLeft') {
+        if (j.key === 'ArrowRight' || j.key === 'ArrowLeft' && !stopMoveEvent) {
             var transform = player.style.transform;
             timmer = setTimeout(function() {
                 var direction = j.key === 'ArrowRight' ? '1' : '-1';
@@ -327,14 +329,14 @@ function characterController(stage) {
         var playerSprite = document.getElementById('spriteBox')
         var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
         var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
-        if (!stopMoveEvent) {
-            if (!player.style.left) {
+
+            if (!player.style.left && !stopMoveEvent) {
                 player.style.left = '0px'
             }
 
             var left = parseInt(player.style.left);
             var transform = player.style.transform;
-            if (e.key === 'ArrowRight' && left < roomLimits) {
+            if (e.key === 'ArrowRight' && left < roomLimits && !stopMoveEvent) {
                 lastLeyPressRight = true;
                 if (timmer) {
                     clearTimeout(timmer)
@@ -353,7 +355,7 @@ function characterController(stage) {
                 openDoors(player)
             }
 
-            if (e.key === 'ArrowLeft' && left > 0) {
+            if (e.key === 'ArrowLeft' && left > 0 && !stopMoveEvent) {
                 lastLeyPressRight = false;
                 if (timmer) {
                     clearTimeout(timmer)
@@ -372,28 +374,17 @@ function characterController(stage) {
             }
 
             //Actions
-            if (e.key === 'ArrowUp') {
-                //playerSprite.setAttribute('style', 'background-position: -240px -480px')
-                checkIfElementIsPresent(player, 'ArrowUp');
-
-            }
-
-            if (e.key === 'ArrowDown') {
-                playerSprite.style = 'animation: steyCharacterAnimation 3s steps(8) infinite;'
-                player.style.left = left + 'px'
-                player.style.transform = transform;
-            }
-
-            if (e.keyCode === 32) {
+            
+            if (e.keyCode === 32 && !stopMoveEvent) {
                 if (!withGun) {
                     defineActionWhenPressSpaceKey(player, stage);
                 } else {
                     fireGun(player, playerSprite, lastLeyPressRight);
                 }
-
+                
             }
-
-            if (e.key === 'r') {
+            
+            if (e.key === 'r' && !stopMoveEvent) {
                 stopMoveEvent = true;
                 if (!withGun) {
                     var pickUpInterval = setInterval(() => {
@@ -422,8 +413,48 @@ function characterController(stage) {
                 //hacer la animacion del pickup Gun
                 pickupGun = !pickupGun;
             }
-        }
+        
+            if (e.key === 'ArrowUp') {
+                if(!stopMoveEvent) {
+                    //playerSprite.setAttribute('style', 'background-position: -240px -480px')
+                    checkIfElementIsPresent(player, 'ArrowUp');
+                }
+                if (!stopQuestionEvent && qs > 0) {
+                    allQuestions[qs].style.backgroundColor = '';
+                    qs--;
+                    allQuestions[qs].style.backgroundColor = '#b7302f';
+                }
+
+            }
+
+            if (e.key === 'ArrowDown') {
+                if (!stopQuestionEvent && qs < (allQuestions.length - 1)) {
+                    allQuestions[qs].style.backgroundColor = '';
+                    qs++;
+                    allQuestions[qs].style.backgroundColor = '#b7302f';
+                }
+            }
+
+            if (e.key === 'Enter') {
+                if(!stopQuestionEvent) {
+                    var dialog = allQuestions[qs].innerText;
+                    removeElements('textArea')
+                    setTime([dialog])
+                    stopQuestionEvent = true;
+                    stopMoveEvent = false;
+                }
+            }
+
     })
+}
+
+
+function questionMode() {
+    debugger;
+    stopMoveEvent = true;
+    stopQuestionEvent = false;
+    allQuestions = document.getElementById('textArea').childNodes
+    qs = 0;
 }
 
 // ============== MODS ===============================
@@ -449,44 +480,12 @@ function defineActionWhenPressSpaceKey(player, stage) {
 }
 
 function doorAction(element, stage) {
-    debugger;
     if (element.levelOut !== undefined) {
         characterPosition = element.positionOut;
         elementsInteract = [];
         removeElements('canvas');
         createScene(stage, element.levelOut);
-        //characterController(stage);
     }
-}
-
-function questionMode() {
-    stopMoveEvent = true;
-    stopQuestionEvent = false;
-    var i = 0;
-    document.addEventListener('keydown', function questions(e) {
-        var allQuestions = document.getElementById('textArea').childNodes
-        console.log(e)
-        if (!stopQuestionEvent) {
-            if (e.key === 'ArrowUp' && i > 0) {
-                allQuestions[i].style.backgroundColor = '';
-                i--;
-                allQuestions[i].style.backgroundColor = '#b7302f';
-            }
-            if (e.key === 'ArrowDown' && i < (allQuestions.length - 1)) {
-                allQuestions[i].style.backgroundColor = '';
-                i++;
-                allQuestions[i].style.backgroundColor = '#b7302f';
-            }
-
-            if (e.key === 'Enter') {
-                var dialog = allQuestions[i].innerText;
-                removeElements('textArea')
-                setTime([dialog])
-                stopQuestionEvent = true;
-                stopMoveEvent = false;
-            }
-        }
-    })
 }
 
 function removeElements(containerElement) {
