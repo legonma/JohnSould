@@ -13,7 +13,7 @@ p {
     justify-content: center;
 }
 
-#background1 {
+#background1, #background2, #backgroundHall, #backgroundShotRoom {
     width: 705px;
     height: 200px;
     position: absolute;
@@ -21,20 +21,27 @@ p {
     justify-content: center;
     align-items: center;
     background-color: rgba(155, 235, 59, 0);
-    background-image: url('img/background1.png');
     box-shadow: -1px 11px 53px -2px rgba(0, 0, 0, 0.49);
 }
 
-#background2 {
+#background1 {
+    background-image: url('img/background1.png');
     width: 705px;
-    height: 200px;
-    position: absolute;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(155, 235, 59, 0);
+}
+
+#background2 {
     background-image: url('img/background2.png');
-    box-shadow: -1px 11px 53px -2px rgba(0, 0, 0, 0.49);
+    width: 704px;
+}
+
+#backgroundHall {
+    background-image: url('img/backgroundHall.png');
+    width: 761px;
+}
+
+#backgroundShotRoom {
+    background-image: url('img/backgroundShotRoom.png');
+    width: 765px;
 }
 
 #lightBackground {
@@ -91,7 +98,8 @@ p {
 
 #door1,
 #door2,
-#door3 {
+#door3,
+#door4 {
     background-image: url('img/doors.png');
     display: flex;
     align-self: flex-end;
@@ -99,6 +107,10 @@ p {
     background-color: rgba(0, 0, 0, 0 );
     width: 62px;
     height: 125px;
+}
+
+#door4 {
+    background-position-x: -62px;
 }
 
 #ventilador {
@@ -141,6 +153,24 @@ p {
     display: flex;
     align-self: flex-end;
     position: relative;
+}
+
+#paperboardShot {
+    display: flex;
+    position: absolute;
+    align-self: flex-end;
+    width: 40px;
+    height: 110px;
+    background-image: url('img/paperboardShot.png');
+}
+
+#shotTable {
+    display: flex;
+    position: relative;
+    align-self: flex-start;
+    width: 35px;
+    height: 186px;
+    background-image: url('img/shotTable.png');
 }
 
 @keyframes ventiladorAnimation {

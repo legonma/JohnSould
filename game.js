@@ -1,5 +1,5 @@
 var stage = [{
-        // ===========================  FIRST LEVEL  ===============================     
+        // ===========================  POLICE STATION FIRST LEVEL  ===============================     
         level: 0,
         scene: {
             width: 705,
@@ -13,6 +13,7 @@ var stage = [{
                 positionOut: 522,
                 interact: true,
                 lock: false,
+                styleStart: '0px',
                 style: '62px',
                 observation: [
                     'Here sayd "ONLY PERSONAL"...',
@@ -20,10 +21,14 @@ var stage = [{
                 ]
             },
             {
-                name: 'door2',
+                name: 'door4',
                 positionX: 606,
+                levelOut: 3,
+                positionOut: 522,
                 interact: true,
-                lock: true,
+                lock: false,
+                styleStart: '-62px',
+                style: '124px',
                 observation: [
                     'Trap.. Chrick.. Click..',
                     'I think is lock'
@@ -75,7 +80,7 @@ var stage = [{
             interact: false,
         }]
     },
-    // ===========================  SECOND LEVEL  =============================== 
+    // ===========================  POLICE STATION SECOND LEVEL  =============================== 
     {
         level: 1,
         scene: {
@@ -90,6 +95,7 @@ var stage = [{
                 positionOut: 522,
                 interact: true,
                 lock: false,
+                styleStart: '0px',
                 style: '62px',
                 observation: [
                     'Here sayd "ONLY PERSONAL"...',
@@ -99,8 +105,11 @@ var stage = [{
             {
                 name: 'door3',
                 positionX: 606,
-                interact: true,
-                lock: true,
+                levelOut: 2,
+                positionOut: 400,
+                interact: true,                
+                lock: false,
+                styleStart: '0px',
                 style: '124px',
                 observation: [
                     'Trap.. Chrick.. Click..',
@@ -141,7 +150,73 @@ var stage = [{
         character: {
             top: 60
         }
-    }
+    },
+    // ===========================  POLICE STATION THIRD LEVEL  =============================== 
+    {
+        level: 2,
+        scene: {
+            width: 761,
+            height: 200,
+            id: 'backgroundHall'
+        },
+        elementsUnderCharacter: [{
+                name: 'door2',
+                positionX: 400,
+                levelOut: 1,
+                positionOut: 606,
+                interact: true,
+                lock: false,
+                styleStart: '0px',
+                style: '62px',
+                observation: [
+                    'Here sayd "ONLY PERSONAL"...',
+                    'I take all cases to personal, so...'
+                ]
+            },
+        ],
+        character: {
+            top: 60
+        }
+    },
+    // ===========================  POLICE STATION FOUR LEVEL (SHOOT-ROOM)  =============================== 
+    {
+        level: 3,
+        scene: {
+            width: 761,
+            height: 200,
+            id: 'backgroundShotRoom'
+        },
+        elementsUnderCharacter: [{
+                name: 'door4',
+                positionX: 522,
+                levelOut: 0,
+                positionOut: 606,
+                interact: true,
+                lock: false,
+                styleStart: '-62px',
+                style: '124px',
+                observation: [
+                    'Here sayd "ONLY PERSONAL"...',
+                    'I take all cases to personal, so...'
+                ]
+            },
+        ],
+        character: {
+            top: 60
+        },
+        elementsOverCharacter: [{
+            name: 'shotTable',
+            positionX: 343,
+            positionY: -6,
+            interact: true,
+        },
+        {
+            name: 'paperboardShot',
+            positionX: 0,
+            damage: 6,
+            interact: true
+        }]
+    }            
 ]
 
 // ============================== WINDOW ONLOAD =============================
@@ -155,6 +230,8 @@ var secondSteps;
 var characterPosition = 0;
 var allQuestions = [];
 var qs;
+var targetDamage = 0;
+
 window.onload = function() {
     createScene(stage, 0);
     characterController(stage);
@@ -201,7 +278,8 @@ function createElementBackground(scene) {
     createBasicElementAndAppendIn('lightBackground', 'canvas');
     var background = document.createElement('div');
     background.id = scene.id;
-    background.style = 'width: ' + scene.width + 'px; height: ' + scene.height + 'px;';
+    canvas.appendChild(background);
+    background.setAttribute('style','width: ' + scene.width + 'px; height: ' + scene.height + 'px;');
     var wall = document.createElement('div');
     wall.id = 'level';
     background.appendChild(wall);
@@ -266,12 +344,12 @@ function openDoors(player) {
     for (var i = 0; i < elementsInteract.length; i++) {
         var element = elementsInteract[i];
         if (objectsAreInPosition(playerLocation, element)) {
-            if (element.name === 'door1' || element.name === 'door2' || element.name === 'door3' && !element.lock) {
+            if (element.name === 'door1' || element.name === 'door2' || element.name === 'door3' ||element.name === 'door4' && !element.lock) {
                 //openThings.play();
                 document.getElementById(element.name).style.backgroundPosition = element.style;
             }
         } else {
-            document.getElementById(element.name).style.backgroundPosition = '0px';
+            document.getElementById(element.name).style.backgroundPosition = element.styleStart;
         }
     }
 }
@@ -318,10 +396,10 @@ function characterController(stage) {
             var transform = player.style.transform;
             timmer = setTimeout(function() {
                 var direction = j.key === 'ArrowRight' ? '1' : '-1';
-                var animation = withGun ? 'background-position-y: -480px; animation: steyWithGunAnimation 3s steps(5) infinite;' : 'animation: steyCharacterAnimation 3s steps(8) infinite;';
+                var animation = withGun ? 'background-position-y: -480px; animation: steyWithGunAnimation 2s steps(5) infinite;' : 'animation: steyCharacterAnimation 2s steps(8) infinite;';
                 playerSprite.setAttribute('style', 'transform: scaleX(' + direction + ');' + animation);
                 player.style.transform = transform;
-            }, 1000)
+            }, 200)
         }
     })
     document.addEventListener('keydown', function listener(e) {
@@ -396,7 +474,7 @@ function characterController(stage) {
                         } else {
                             pickUpFrame++;
                         }
-                    }, 300);
+                    }, 150);
                 } else {
                     pickUpFrame = 3;
                     var pickUpInterval = setInterval(() => {
@@ -408,7 +486,7 @@ function characterController(stage) {
                         } else {
                             pickUpFrame--;
                         }
-                    }, 300);
+                    }, 150);
                 }
                 //hacer la animacion del pickup Gun
                 pickupGun = !pickupGun;
@@ -416,7 +494,7 @@ function characterController(stage) {
         
             if (e.key === 'ArrowUp') {
                 if(!stopMoveEvent) {
-                    //playerSprite.setAttribute('style', 'background-position: -240px -480px')
+                    playerSprite.setAttribute('style', 'background-position: -240px -480px')
                     checkIfElementIsPresent(player, 'ArrowUp');
                 }
                 if (!stopQuestionEvent && qs > 0) {
@@ -441,7 +519,6 @@ function characterController(stage) {
                     removeElements('textArea')
                     setTime([dialog])
                     stopQuestionEvent = true;
-                    stopMoveEvent = false;
                 }
             }
 
@@ -450,7 +527,6 @@ function characterController(stage) {
 
 
 function questionMode() {
-    debugger;
     stopMoveEvent = true;
     stopQuestionEvent = false;
     allQuestions = document.getElementById('textArea').childNodes
@@ -546,14 +622,16 @@ function printInDialogBox(line) {
 function fireGun(player, playerSprite, lastLeyPressRight) {
     stopMoveEvent = true;
     fireFrame = 0;
+    console.log(player)
     var direction = lastLeyPressRight ? '1' : '-1';
     var pickUpInterval = setInterval(() => {
         playerSprite.setAttribute('style', 'transform: scaleX(' + direction + '); background-position: ' + (-320 + (-80 * fireFrame)) + 'px -120px');
+
         if (fireFrame === 2) {
-            pistolShotSound.play();
-            createBullet();
+            pistolShotSound.play(); 
+            shotingElements(player);
         }
-        if (fireFrame === 4) {
+        if (fireFrame === 5) {
             playerSprite.setAttribute('style', 'transform: scaleX(' + direction + '); background-position: ' + (-320) + 'px -120px');
             clipFall.play();
             stopMoveEvent = false;
@@ -562,9 +640,16 @@ function fireGun(player, playerSprite, lastLeyPressRight) {
         } else {
             fireFrame++;
         }
-    }, 300);
+    }, 150);
 }
 
-function createBullet() {
-
+function shotingElements(player) {
+    for (var i = 0; i < elementsInteract.length; i++) {
+        var element = elementsInteract[i];
+            if (element.name === 'paperboardShot') {
+                targetDamage === element.damage ? targetDamage = 0 : targetDamage ++;
+                papaeBoard = document.getElementById(element.name);
+                papaeBoard.setAttribute('style', 'background-position: -' + (40 * targetDamage) +'px 0px;');
+            }
+    }
 }
