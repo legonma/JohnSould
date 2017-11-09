@@ -276,9 +276,9 @@ var characterPosition = 0;
 var allQuestions = [];
 var qs;
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
-
+var lastLeyPressRight = false;
 window.onload = function() {
-    createScene(stage, 0);
+    createScene(stage, 2);
     characterController(stage);
 }
 
@@ -386,7 +386,9 @@ function checkIfPlayerCanHide(player, playerSprite, direction) {
     for (var i = 0; i < objetsToHide.length; i++) {
         var element = objetsToHide[i];
         if (objectsAreInPosition(playerLocation, element)) {
-            if(element.hide === 'down') {                
+            positionHide = lastLeyPressRight ? 10 : parseInt(document.getElementById(element.name).offsetWidth) - 10 ;
+            player.setAttribute('style', 'left: '+ (element.positionX + positionHide) + 'px');
+            if(element.hide === 'down') {
                 playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[0] +' -360px');                
             } 
             if(element.hide === 'up') {
@@ -423,8 +425,7 @@ function openDoors(player) {
 
 function objectsAreInPosition(playerLocation, element) {
     var intervalStart = element.positionX;
-    var id = element.name;
-    var intervalEnd = intervalStart + parseInt(document.getElementById(id).offsetWidth);
+    var intervalEnd = intervalStart + parseInt(document.getElementById(element.name).offsetWidth);
     return playerLocation >= intervalStart && playerLocation <= intervalEnd;
 }
 
@@ -453,7 +454,6 @@ function characterController(stage) {
     var pickUpFrame = 0;
     var timmer;
     var withGun = false;
-    var lastLeyPressRight = false;
     var stayWhenPress = 8;
     document.addEventListener('keyup', function listenerUp(j) {
         var player = document.getElementById('characterBox')
