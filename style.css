@@ -164,6 +164,32 @@ p {
     background-image: url('img/paperboardShot.png');
 }
 
+
+#fileCabinetBox1, #fileCabinetBox2, #fileCabinetBox3, #fileCabinetBox4, #fileCabinetBox5 {
+    display: flex;
+    position: absolute;
+    align-self: flex-end;
+    width: 90px;
+    height: 108px;
+}
+
+#fileCabinetBox1 {
+    background-image: url('img/fileCabinetBox1.png');
+}
+#fileCabinetBox2 {
+    background-image: url('img/fileCabinetBox2.png');
+}
+#fileCabinetBox3 {
+    background-image: url('img/fileCabinetBox3.png');
+}
+#fileCabinetBox4 {
+    background-image: url('img/fileCabinetBox4.png');
+}
+#fileCabinetBox5 {
+    background-image: url('img/fileCabinetBox5.png');
+}
+
+
 #shotTable {
     display: flex;
     position: relative;

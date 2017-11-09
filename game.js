@@ -24,7 +24,7 @@ var stage = [{
                 name: 'door4',
                 positionX: 606,
                 levelOut: 3,
-                positionOut: 522,
+                positionOut: 500,
                 interact: true,
                 lock: false,
                 styleStart: '-62px',
@@ -106,7 +106,7 @@ var stage = [{
                 name: 'door3',
                 positionX: 606,
                 levelOut: 2,
-                positionOut: 400,
+                positionOut: 540,
                 interact: true,                
                 lock: false,
                 styleStart: '0px',
@@ -161,7 +161,7 @@ var stage = [{
         },
         elementsUnderCharacter: [{
                 name: 'door2',
-                positionX: 400,
+                positionX: 540,
                 levelOut: 1,
                 positionOut: 606,
                 interact: true,
@@ -172,6 +172,48 @@ var stage = [{
                     'Here sayd "ONLY PERSONAL"...',
                     'I take all cases to personal, so...'
                 ]
+            },
+            {
+                name: 'fileCabinetBox1',
+                positionX: 0,
+                positionY: 72,
+                hide: 'down',
+            },
+            {
+                name: 'fileCabinetBox2',
+                positionX: 100,
+                positionY: 72,
+                hide: 'down',
+            },
+            {
+                name: 'fileCabinetBox3',
+                positionX: 200,
+                positionY: 72,
+                hide: 'down',
+            },
+            {
+                name: 'fileCabinetBox4',
+                positionX: 300,
+                positionY: 72,
+                hide: 'down',
+            },
+            {
+                name: 'fileCabinetBox5',
+                positionX: 400,
+                positionY: 72,
+                hide: 'up',
+            },
+            {
+                name: 'ventilador',
+                positionX: -260,
+                positionY: -3,
+                interact: false,
+            },
+            {
+                name: 'ventilador',
+                positionX: -70,
+                positionY: -3,
+                interact: false,
             },
         ],
         character: {
@@ -188,7 +230,7 @@ var stage = [{
         },
         elementsUnderCharacter: [{
                 name: 'door4',
-                positionX: 522,
+                positionX: 500,
                 levelOut: 0,
                 positionOut: 606,
                 interact: true,
@@ -214,14 +256,17 @@ var stage = [{
             name: 'paperboardShot',
             positionX: 0,
             damage: 6,
-            interact: true
+            damageRest: 0,
+            enemy: true
         }]
     }            
 ]
 
 // ============================== WINDOW ONLOAD =============================
 
+var enemysArePresent = [];
 var elementsInteract = [];
+var objetsToHide = [];
 var stopMoveEvent = false;
 var stopQuestionEvent = true;
 var pickupGun = false;
@@ -230,7 +275,7 @@ var secondSteps;
 var characterPosition = 0;
 var allQuestions = [];
 var qs;
-var targetDamage = 0;
+var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 
 window.onload = function() {
     createScene(stage, 0);
@@ -318,8 +363,15 @@ function createDomElement(element) {
     div.id = element.name;
     div.style = 'left: ' + element.positionX + 'px; top: ' + element.positionY + 'px;';
     appendContentIn(div, 'level');
+    var elementTemp = JSON.parse(JSON.stringify(element))
     if (element.interact) {
-        elementsInteract.push(element);
+        elementsInteract.push(elementTemp);
+    }
+    if(element.enemy) {
+        enemysArePresent.push(elementTemp);
+    }
+    if(element.hide != undefined) {
+        objetsToHide.push(elementTemp)
     }
 }
 
@@ -328,6 +380,21 @@ function appendContentIn(content, id) {
     level.appendChild(content)
 }
 
+
+function checkIfPlayerCanHide(player, playerSprite, direction) {
+    var playerLocation = parseInt(player.style.left);
+    for (var i = 0; i < objetsToHide.length; i++) {
+        var element = objetsToHide[i];
+        if (objectsAreInPosition(playerLocation, element)) {
+            if(element.hide === 'down') {                
+                playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[0] +' -360px');                
+            } 
+            if(element.hide === 'up') {
+                playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[8] +' -360px');
+            }   
+        }
+    }
+}
 
 function checkIfElementIsPresent(player) {
     var playerLocation = parseInt(player.style.left);
@@ -387,15 +454,16 @@ function characterController(stage) {
     var timmer;
     var withGun = false;
     var lastLeyPressRight = false;
+    var stayWhenPress = 8;
     document.addEventListener('keyup', function listenerUp(j) {
         var player = document.getElementById('characterBox')
         var playerSprite = document.getElementById('spriteBox')
         var getCssPlayer = window.getComputedStyle(player, null).getPropertyValue('width')
         var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
-        if (j.key === 'ArrowRight' || j.key === 'ArrowLeft' && !stopMoveEvent) {
+        if (j.key === 'ArrowRight' || j.key === 'ArrowLeft' || j.key === 'ArrowUp' && !stopMoveEvent) {
             var transform = player.style.transform;
             timmer = setTimeout(function() {
-                var direction = j.key === 'ArrowRight' ? '1' : '-1';
+                var direction = lastLeyPressRight ? '1' : '-1';
                 var animation = withGun ? 'background-position-y: -480px; animation: steyWithGunAnimation 2s steps(5) infinite;' : 'animation: steyCharacterAnimation 2s steps(8) infinite;';
                 playerSprite.setAttribute('style', 'transform: scaleX(' + direction + ');' + animation);
                 player.style.transform = transform;
@@ -494,8 +562,14 @@ function characterController(stage) {
         
             if (e.key === 'ArrowUp') {
                 if(!stopMoveEvent) {
-                    playerSprite.setAttribute('style', 'background-position: -240px -480px')
-                    checkIfElementIsPresent(player, 'ArrowUp');
+                    var direction = lastLeyPressRight ? '1':'-1';
+                    if(withGun){
+                        playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[8] +' -240px');            
+                        checkIfPlayerCanHide(player, playerSprite, direction);
+                    } else {
+                        playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: -80px -240px')    
+                        checkIfElementIsPresent(player, 'ArrowUp');
+                    }
                 }
                 if (!stopQuestionEvent && qs > 0) {
                     allQuestions[qs].style.backgroundColor = '';
@@ -559,6 +633,7 @@ function doorAction(element, stage) {
     if (element.levelOut !== undefined) {
         characterPosition = element.positionOut;
         elementsInteract = [];
+        enemysArePresent = [];
         removeElements('canvas');
         createScene(stage, element.levelOut);
     }
@@ -629,7 +704,7 @@ function fireGun(player, playerSprite, lastLeyPressRight) {
 
         if (fireFrame === 2) {
             pistolShotSound.play(); 
-            shotingElements(player);
+            shotingElements(player, lastLeyPressRight);
         }
         if (fireFrame === 5) {
             playerSprite.setAttribute('style', 'transform: scaleX(' + direction + '); background-position: ' + (-320) + 'px -120px');
@@ -643,13 +718,16 @@ function fireGun(player, playerSprite, lastLeyPressRight) {
     }, 150);
 }
 
-function shotingElements(player) {
-    for (var i = 0; i < elementsInteract.length; i++) {
-        var element = elementsInteract[i];
+function shotingElements(player, lastLeyPressRight) {
+    for (var i = 0; i < enemysArePresent.length; i++) {
+        var element = enemysArePresent[i];
+        var aim = element.positionX > player.left ? true : false;
+        if(lastLeyPressRight === aim){
             if (element.name === 'paperboardShot') {
-                targetDamage === element.damage ? targetDamage = 0 : targetDamage ++;
+                element.damageRest === element.damage ? element.damageRest = 0 : element.damageRest ++;
                 papaeBoard = document.getElementById(element.name);
-                papaeBoard.setAttribute('style', 'background-position: -' + (40 * targetDamage) +'px 0px;');
+                papaeBoard.setAttribute('style', 'background-position: -' + (40 * element.damageRest) +'px 0px;');
             }
+        }
     }
 }
