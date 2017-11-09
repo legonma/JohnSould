@@ -1,5 +1,6 @@
 var stage = [{
-        // ===========================  POLICE STATION FIRST LEVEL  ===============================     
+        // ===========================  POLICE STATION FIRST LEVEL  ===============================  
+        // document.getElementById(element.name).getBoundingClientRect().left;   
         level: 0,
         scene: {
             width: 705,
