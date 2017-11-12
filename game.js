@@ -38,7 +38,7 @@ var stage = [{
             {
                 name: 'deskOfficer',
                 positionX: 320,
-                positionY: 0,
+                positionY: 60,
                 interact: true,
                 observation: [
                     'This is a policeman...',
@@ -54,19 +54,19 @@ var stage = [{
             },
             {
                 name: 'board',
-                positionX: 10,
+                positionX: 60,
                 positionY: 50,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 20,
+                positionX: 170,
                 positionY: -3,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 140,
+                positionX: 380,
                 positionY: -3,
                 interact: false,
             }
@@ -76,8 +76,8 @@ var stage = [{
         },
         elementsOverCharacter: [{
             name: 'macetaAmarilla',
-            positionX: -335,
-            positionY: -0,
+            positionX: 0,
+            positionY: 110,
             interact: false,
         }]
     },
@@ -120,7 +120,7 @@ var stage = [{
             {
                 name: 'atendedor',
                 positionX: 325,
-                positionY: -45,
+                positionY: 42,
                 interact: true,
                 observation: [
                     'This is a policeman...',
@@ -142,7 +142,7 @@ var stage = [{
             },
             {
                 name: 'ventilador',
-                positionX: 305,
+                positionX: 415,
                 positionY: -3,
                 interact: false,
             }
@@ -206,13 +206,13 @@ var stage = [{
             },
             {
                 name: 'ventilador',
-                positionX: -260,
+                positionX: 160,
                 positionY: -3,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: -70,
+                positionX: 420,
                 positionY: -3,
                 interact: false,
             },
@@ -260,8 +260,21 @@ var stage = [{
             damageRest: 0,
             enemy: true
         }]
-    }            
+    },
+    // ===========================  POLICE BIG HALL  =============================== 
+    {
+        level: 4,
+        scene: {
+            width: 1571,
+            height: 318,
+            left: 200,
+            id: 'bigHall'
+        },
+        character: {
+        }
+    }
 ]
+
 
 // ============================== WINDOW ONLOAD =============================
 
@@ -279,7 +292,7 @@ var qs;
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 var lastLeyPressRight = false;
 window.onload = function() {
-    createScene(stage, 2);
+    createScene(stage, 4);
     characterController(stage);
 }
 
@@ -325,13 +338,13 @@ function createElementBackground(scene) {
     var background = document.createElement('div');
     background.id = scene.id;
     canvas.appendChild(background);
-    background.setAttribute('style','width: ' + scene.width + 'px; height: ' + scene.height + 'px;');
+    background.setAttribute('style','width: ' + scene.width + 'px; height: ' + scene.height + 'px; left:' + scene.left +'px');
     var wall = document.createElement('div');
     wall.id = 'level';
     background.appendChild(wall);
     canvas.appendChild(background);
     createElementWall(wall, scene);
-    centerElementIn(background, canvas);
+//    centerElementIn(background, canvas);
 }
 
 function createBasicElementAndAppendIn(basicElement, appendIn) {
@@ -434,8 +447,6 @@ function dialogWhenPressUp(player, element) {
     setTime(element.observation);
 }
 
-
-
 // =======================  CHARACTER  ===========================
 function character(characterObject) {
     var character = document.createElement('div');
@@ -447,7 +458,6 @@ function character(characterObject) {
     character.appendChild(spriteBox);
     appendContentIn(character, 'level')
 }
-
 
 function characterController(stage) {
     var walk = -80;
@@ -497,7 +507,12 @@ function characterController(stage) {
                     playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                 }
                 countSteps === 6 ? countSteps = 1 : countSteps++;
-                player.style.left = (left + 10) + 'px';
+                if(stage.scene.width > document.getElementById('canvas').width) {
+                    console.log(stage.scene.width)
+                    console.log(document.getElementById('canvas').width)
+                    document.getElementById(stage.scene.id).setAttribute('style', 'left: ' + (parseInt(document.getElementById(stage.scene.id).style.left) + 10) + 'px'); 
+                }
+                    player.style.left = (left + 10) + 'px';
                 !(countSteps % 2) ? firstSteps.play(): secondSteps.play();
                 openDoors(player)
             }
@@ -600,7 +615,6 @@ function characterController(stage) {
     })
 }
 
-
 function questionMode() {
     stopMoveEvent = true;
     stopQuestionEvent = false;
@@ -609,7 +623,6 @@ function questionMode() {
 }
 
 // ============== MODS ===============================
-
 function defineActionWhenPressSpaceKey(player, stage) {
     var playerPosition = parseInt(player.style.left);
     for (i = 0; i < elementsInteract.length; i++) {

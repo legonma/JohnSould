@@ -11,11 +11,13 @@ p {
     background-color: #24292b;
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 
-#background1, #background2, #backgroundHall, #backgroundShotRoom {
+#background1, #background2, #backgroundHall, #backgroundShotRoom, #bigHall {
     width: 705px;
     height: 200px;
+    background-repeat: no-repeat;
     position: absolute;
     display: flex;
     justify-content: center;
@@ -42,6 +44,12 @@ p {
 #backgroundShotRoom {
     background-image: url('img/backgroundShotRoom.png');
     width: 765px;
+}
+
+#bigHall {
+    background-image: url('img/bigHall.png');
+    width: 1571px;   
+    height: 318px; 
 }
 
 #lightBackground {
@@ -93,7 +101,7 @@ p {
     height: 91px;
     display: flex;
     align-self: flex-end;
-    position: relative;
+    position: absolute;
 }
 
 #door1,
@@ -115,7 +123,7 @@ p {
 
 #ventilador {
     display: flex;
-    position: relative;
+    position: absolute;
     align-self: flex-start;
     width: 82px;
     height: 56px;
@@ -135,12 +143,12 @@ p {
     height: 70px;
     display: flex;
     align-self: flex-end;
-    position: relative;
+    position: absolute;
     background-image: url('img/Maceta.png');
 }
 
 #board {
-    position: relative;
+    position: absolute;
     width: 120px;
     height: 48px;
     background-image: url('img/Board.png');
@@ -152,7 +160,7 @@ p {
     height: 120px;
     display: flex;
     align-self: flex-end;
-    position: relative;
+    position: absolute;
 }
 
 #paperboardShot {
@@ -192,7 +200,7 @@ p {
 
 #shotTable {
     display: flex;
-    position: relative;
+    position: absolute;
     align-self: flex-start;
     width: 35px;
     height: 186px;
