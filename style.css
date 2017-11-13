@@ -19,7 +19,7 @@ body {
     transform: scale(1);
 }
 
-#background1, #background2, #backgroundHall, #backgroundShotRoom, #bigHall {
+.background {
     width: 705px;
     height: 200px;
     background-repeat: no-repeat;

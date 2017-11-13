@@ -282,7 +282,7 @@ var qs;
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 var lastLeyPressRight = false;
 window.onload = function() {
-    createScene(stage, 0);
+    createScene(stage, 2);
     characterController(stage);
 }
 
@@ -327,7 +327,7 @@ function createElementBackground(scene) {
     createBasicElementAndAppendIn('lightBackground', 'canvas');
     var background = document.createElement('div');
     background.id = scene.id;
-    background.className = 'box-shadow';
+    background.className = 'background';
     canvas.appendChild(background);
     background.setAttribute('style','width: ' + scene.width + 'px; height: ' + scene.height + 'px; left:' + scene.left +'px');
     var wall = document.createElement('div');
@@ -504,11 +504,12 @@ function characterController(stage) {
                     playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                 }
                 countSteps === 6 ? countSteps = 1 : countSteps++;
-                var sceneWidth = document.getElementById('canvas');
+                var canvas = document.getElementById('canvas');
+                var background = document.getElementsByClassName('background')[0];
                 // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
-                var limitLeftBackground = -(parseInt(window.getComputedStyle(sceneWidth).getPropertyValue('width')) - ((parseInt(sceneWidth.childNodes[2].offsetWidth) + 83) /2));
-                if(sceneWidth.childNodes[2].offsetWidth > sceneWidth.offsetWidth && parseInt(sceneWidth.childNodes[2].style.left) > limitLeftBackground) {
-                    sceneWidth.childNodes[2].style.left = (parseInt(sceneWidth.childNodes[2].style.left) - 10) + 'px'; 
+                var limitLeftBackground = ((canvas.offsetWidth - 167) - ((parseInt(background.offsetWidth))));
+                if(background.offsetWidth > canvas.offsetWidth && parseInt(background.style.left) > limitLeftBackground) {
+                    background.style.left = (parseInt(background.style.left) - 10) + 'px'; 
                 }
                 player.style.left = (left + 10) + 'px';
                 !(countSteps % 2) ? firstSteps.play(): secondSteps.play();
@@ -528,11 +529,12 @@ function characterController(stage) {
                     playerSprite.setAttribute('style', 'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                 }
                 countSteps === 6 ? countSteps = 1 : countSteps++;
-                var sceneWidth = document.getElementById('canvas');
+                var canvas = document.getElementById('canvas');
+                var background = document.getElementsByClassName('background')[0];
                 // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
                 var limitLeftBackground = 167;
-                if(sceneWidth.childNodes[2].offsetWidth > sceneWidth.offsetWidth && parseInt(sceneWidth.childNodes[2].style.left) < limitLeftBackground) {
-                    sceneWidth.childNodes[2].style.left = (parseInt(sceneWidth.childNodes[2].style.left) + 10) + 'px'; 
+                if(background.offsetWidth > canvas.offsetWidth && parseInt(background.style.left) < limitLeftBackground) {
+                    background.style.left = (parseInt(background.style.left) + 10) + 'px'; 
                 }                
                 player.style.left = (left - 10) + 'px';
                 !(countSteps % 2) ? firstSteps.play(): secondSteps.play();
