@@ -156,9 +156,10 @@ var stage = [{
     {
         level: 2,
         scene: {
-            width: 761,
-            height: 200,
-            id: 'backgroundHall'
+            width: 1571,
+            height: 318,
+            left: 200,
+            id: 'bigHall'
         },
         elementsUnderCharacter: [{
                 name: 'door2',
@@ -177,49 +178,49 @@ var stage = [{
             {
                 name: 'fileCabinetBox1',
                 positionX: 0,
-                positionY: 72,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox2',
                 positionX: 100,
-                positionY: 72,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox3',
                 positionX: 200,
-                positionY: 72,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox4',
                 positionX: 300,
-                positionY: 72,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox5',
                 positionX: 400,
-                positionY: 72,
                 hide: 'up',
             },
             {
                 name: 'ventilador',
                 positionX: 160,
-                positionY: -3,
+                positionY: 116,
                 interact: false,
             },
             {
                 name: 'ventilador',
                 positionX: 420,
-                positionY: -3,
+                positionY: 116,
                 interact: false,
             },
         ],
         character: {
-            top: 60
-        }
+        },
+        elementsOverCharacter: [{
+            name: 'balcon',
+            positionX: 682,
+            positionY: 11,
+            interact: false,
+        }]
     },
     // ===========================  POLICE STATION FOUR LEVEL (SHOOT-ROOM)  =============================== 
     {
@@ -261,18 +262,7 @@ var stage = [{
             enemy: true
         }]
     },
-    // ===========================  POLICE BIG HALL  =============================== 
-    {
-        level: 4,
-        scene: {
-            width: 1571,
-            height: 318,
-            left: 200,
-            id: 'bigHall'
-        },
-        character: {
-        }
-    }
+    // ===========================  --  =============================== 
 ]
 
 
@@ -292,7 +282,7 @@ var qs;
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 var lastLeyPressRight = false;
 window.onload = function() {
-    createScene(stage, 4);
+    createScene(stage, 0);
     characterController(stage);
 }
 
@@ -337,6 +327,7 @@ function createElementBackground(scene) {
     createBasicElementAndAppendIn('lightBackground', 'canvas');
     var background = document.createElement('div');
     background.id = scene.id;
+    background.className = 'box-shadow';
     canvas.appendChild(background);
     background.setAttribute('style','width: ' + scene.width + 'px; height: ' + scene.height + 'px; left:' + scene.left +'px');
     var wall = document.createElement('div');
@@ -344,7 +335,7 @@ function createElementBackground(scene) {
     background.appendChild(wall);
     canvas.appendChild(background);
     createElementWall(wall, scene);
-//    centerElementIn(background, canvas);
+    centerElementIn(background, canvas);
 }
 
 function createBasicElementAndAppendIn(basicElement, appendIn) {
@@ -362,13 +353,19 @@ function createElementWall(wall, scene) {
     wall.style = 'width: ' + widthStyle + 'px; height: ' + heightStyle + 'px;';
 }
 
-function centerElementIn(obj, backObj) {
-    var objStyle = window.getComputedStyle(document.getElementById(obj.id), null)
-    var canvasStyle = window.getComputedStyle(backObj, null)
-        //To center element we`ll calculate a new top and left.
-    var newTop = (parseInt(canvasStyle.getPropertyValue('height')) - parseInt(objStyle.getPropertyValue('height'))) / 2
-    var newLeft = (parseInt(canvasStyle.getPropertyValue('width')) - parseInt(objStyle.getPropertyValue('width'))) / 2
-    obj.style = 'top: ' + newTop + 'px; left: ' + newLeft + 'px';
+function centerElementIn(background, canvas) {
+//    var backgroundStyle = window.getComputedStyle(document.getElementById(backgdound.id), null)
+//    var canvasStyle = window.getComputedStyle(canvas, null)
+    //To center element we`ll calculate a new top and left.
+    var newLeft;
+    if(background.offsetWidth > canvas.offsetWidth) {
+        newLeft = 167;
+        
+    } else {
+        newLeft = (parseInt(canvas.offsetWidth) - parseInt(background.offsetWidth)) / 2    
+    }
+    var newTop = (parseInt(canvas.offsetHeight) - parseInt(background.offsetHeight)) / 2
+    background.style = 'top: ' + newTop + 'px; left: ' + newLeft + 'px';
 }
 
 // ==================   FUNCTIONS CREATE ELEMENETS ON SCENE   ==========================
@@ -503,16 +500,17 @@ function characterController(stage) {
                     playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -360px');
 
                 } else {
-                    //para contar los steps del sprite console.log(countSteps)
+                //para contar los steps del sprite console.log(countSteps)
                     playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                 }
                 countSteps === 6 ? countSteps = 1 : countSteps++;
-                if(stage.scene.width > document.getElementById('canvas').width) {
-                    console.log(stage.scene.width)
-                    console.log(document.getElementById('canvas').width)
-                    document.getElementById(stage.scene.id).setAttribute('style', 'left: ' + (parseInt(document.getElementById(stage.scene.id).style.left) + 10) + 'px'); 
+                var sceneWidth = document.getElementById('canvas');
+                // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
+                var limitLeftBackground = -(parseInt(window.getComputedStyle(sceneWidth).getPropertyValue('width')) - ((parseInt(sceneWidth.childNodes[2].offsetWidth) + 83) /2));
+                if(sceneWidth.childNodes[2].offsetWidth > sceneWidth.offsetWidth && parseInt(sceneWidth.childNodes[2].style.left) > limitLeftBackground) {
+                    sceneWidth.childNodes[2].style.left = (parseInt(sceneWidth.childNodes[2].style.left) - 10) + 'px'; 
                 }
-                    player.style.left = (left + 10) + 'px';
+                player.style.left = (left + 10) + 'px';
                 !(countSteps % 2) ? firstSteps.play(): secondSteps.play();
                 openDoors(player)
             }
@@ -530,6 +528,12 @@ function characterController(stage) {
                     playerSprite.setAttribute('style', 'transform: scaleX(-1); background-position: ' + (walk + (-80 * countSteps)) + 'px -240px');
                 }
                 countSteps === 6 ? countSteps = 1 : countSteps++;
+                var sceneWidth = document.getElementById('canvas');
+                // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
+                var limitLeftBackground = 167;
+                if(sceneWidth.childNodes[2].offsetWidth > sceneWidth.offsetWidth && parseInt(sceneWidth.childNodes[2].style.left) < limitLeftBackground) {
+                    sceneWidth.childNodes[2].style.left = (parseInt(sceneWidth.childNodes[2].style.left) + 10) + 'px'; 
+                }                
                 player.style.left = (left - 10) + 'px';
                 !(countSteps % 2) ? firstSteps.play(): secondSteps.play();
                 openDoors(player)
