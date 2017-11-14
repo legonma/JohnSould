@@ -562,6 +562,7 @@ function createElementBackground(scene) {
     canvas.appendChild(background);
     createElementWall(wall, scene);
     centerElementIn(background, canvas);
+    document.getElementById('textArea').style.top = (parseInt(background.style.top) + 220) + 'px';
 }
 
 function createBasicElementAndAppendIn(basicElement, appendIn) {
