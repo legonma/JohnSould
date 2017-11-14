@@ -7,7 +7,31 @@ var stage = [{
             height: 200,
             id: 'background1'
         },
-        elementsUnderCharacter: [{
+        elementsUnderCharacter: [
+            {
+                name: 'outDoor2',
+                positionX: 104,
+                levelOut: 5,
+                positionOut: 50,
+                interact: true,
+                lock: false,
+            },
+            {
+                name: 'door1',
+                positionX: 104,
+                levelOut: 5,
+                positionOut: 50,
+                interact: true,
+                lock: false,
+                styleStart: '0px',
+                style: '62px',
+                observation: [
+                    'Here sayd "ONLY PERSONAL"...',
+                    'I take all cases to personal, so...'
+                ]
+            },
+
+            {
                 name: 'door1',
                 positionX: 522,
                 levelOut: 1,
@@ -79,7 +103,16 @@ var stage = [{
             positionX: 0,
             positionY: 110,
             interact: false,
-        }]
+        },
+        {
+            name: 'outDoor',
+            positionX: 104,
+            levelOut: 5,
+            positionOut: 50,
+            interact: true,
+            lock: false,
+        },
+    ]
     },
     // ===========================  POLICE STATION SECOND LEVEL  =============================== 
     {
@@ -152,7 +185,7 @@ var stage = [{
             top: 60
         }
     },
-    // ===========================  POLICE STATION THIRD LEVEL  =============================== 
+    // ===========================  POLICE STATION BIG HALL LEVEL  =============================== 
     {
         level: 2,
         scene: {
@@ -176,28 +209,46 @@ var stage = [{
                 ]
             },
             {
-                name: 'fileCabinetBox1',
-                positionX: 0,
-                hide: 'down',
+                name: 'DeskComputer',
+                positionX: 10,
+                interact: false,
             },
             {
-                name: 'fileCabinetBox2',
-                positionX: 100,
-                hide: 'down',
+                name: 'computer',
+                positionX: 105,
+                positionY: 220,                
+                interact: false,
+            },
+            {
+                name: 'DeskChair',
+                positionX: 40,
+                interact: false,
+            },
+            {
+                name: 'clock',
+                positionX: 300,
+                positionY: 140,
+                interact: false,
+            },
+            {
+                name: 'PosterCop',
+                positionX: 50,
+                positionY: 160,
+                interact: false,
             },
             {
                 name: 'fileCabinetBox3',
-                positionX: 200,
+                positionX: 170,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox4',
-                positionX: 300,
+                positionX: 280,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox5',
-                positionX: 400,
+                positionX: 390,
                 hide: 'up',
             },
             {
@@ -212,6 +263,72 @@ var stage = [{
                 positionY: 116,
                 interact: false,
             },
+            {
+                name: 'DeskComputer',
+                positionX: 1000,
+                interact: false,
+            },
+            {
+                name: 'computer',
+                positionX: 1095,
+                positionY: 220,                
+                interact: false,
+            },
+            {
+                name: 'clock',
+                positionX: 1150,
+                positionY: 140,
+                interact: false,
+            },
+            {
+                name: 'DeskComputer',
+                positionX: 1200,
+                interact: false,
+            },
+            {
+                name: 'computer',
+                positionX: 1295,
+                positionY: 220,                
+                interact: false,
+            },
+            {
+                name: 'PosterCop',
+                positionX: 1000,
+                positionY: 160,
+                interact: false,
+            },
+            {
+                name: 'posterBreaked',
+                positionX: 1200,
+                positionY: 190,
+                interact: false,
+            },
+            {
+                name: 'ventilador',
+                positionX: 1010,
+                positionY: 116,
+                interact: false,
+            },
+            {
+                name: 'ventilador',
+                positionX: 1220,
+                positionY: 116,
+                interact: false,
+            },
+            {
+                name: 'door1',
+                positionX: 1400,
+                levelOut: 4,
+                positionOut: 21,
+                interact: true,
+                lock: false,
+                styleStart: '0px',
+                style: '124px',
+                observation: [
+                    'Here sayd "ONLY PERSONAL"...',
+                    'I take all cases to personal, so...'
+                ]
+            },
         ],
         character: {
         },
@@ -219,6 +336,11 @@ var stage = [{
             name: 'balcon',
             positionX: 682,
             positionY: 11,
+            interact: false,
+        },
+        {
+            name: 'DeskChair',
+            positionX: 1030,
             interact: false,
         }]
     },
@@ -262,7 +384,116 @@ var stage = [{
             enemy: true
         }]
     },
-    // ===========================  --  =============================== 
+    // ===========================  OFFICE JOHN  =============================== 
+    {
+        level: 4,
+        scene: {
+            width: 408,
+            height: 200,
+            id: 'officeJohn'
+        },
+        elementsUnderCharacter: [{
+                name: 'door1',
+                positionX: 34,
+                levelOut: 2,
+                positionOut: 1400,
+                interact: true,
+                lock: false,
+                styleStart: '0px',
+                style: '124px',
+                observation: [
+                    'Here sayd "ONLY PERSONAL"...',
+                    'I take all cases to personal, so...'
+                ]
+            },
+            {
+                name: 'board2',
+                positionX: 130,
+                positionY: 50,
+                interact: false,
+            },
+            {
+                name: 'macetaChica',
+                positionX: 365,
+                positionY: 45,
+                interact: false,
+            },
+        ],
+        character: {
+            top: 60
+        },
+        elementsOverCharacter: []
+    },
+    // ===========================  PoliceStation out  =============================== 
+    {
+        level: 5,
+        scene: {
+            width: 1462,
+            height: 552,
+            id: 'PoliceCityStation'
+        },
+        elementsUnderCharacter: [
+        {
+            name: 'alcantarilla',
+            positionX: 140,
+            positionY: 448,
+            interact: false,
+        },
+            {
+            name: 'trash',
+            positionX: 511,
+            positionY: 367,
+            interact: false,
+        },
+        {
+            name: 'policeCar',
+            positionX: 576,
+            positionY: 334,
+            interact: false,
+        },
+    ],
+        character: {
+            top: 321
+        },
+        elementsOverCharacter: [
+            {
+                name: 'lightPost',
+                positionX: 777,
+                positionY: 251,
+                interact: false,
+            },
+            {
+                name: 'subwayStation',
+                positionX: 1051,
+                positionY: 289,
+                interact: false,
+            },
+            {
+                name: 'metalicWeb',
+                positionX: 1256,
+                positionY: 289,
+                interact: false,
+            },
+            {
+                name: 'diaryBlack',
+                positionX: 0,
+                positionY: 457,
+                interact: false,
+            },
+            {
+                name: 'signBlack',
+                positionX: 380,
+                positionY: 372,
+                interact: false,
+            },            
+            {
+                name: 'lightBlack',
+                positionX: 890,
+                positionY: 362,
+                interact: false,
+            }
+        ]
+    },    
 ]
 
 
@@ -282,7 +513,7 @@ var qs;
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 var lastLeyPressRight = false;
 window.onload = function() {
-    createScene(stage, 2);
+    createScene(stage, 0);
     characterController(stage);
 }
 
@@ -359,8 +590,7 @@ function centerElementIn(background, canvas) {
     //To center element we`ll calculate a new top and left.
     var newLeft;
     if(background.offsetWidth > canvas.offsetWidth) {
-        newLeft = 167;
-        
+        background.id === 'PoliceCityStation' ? newLeft = 0 : newLeft = 167;
     } else {
         newLeft = (parseInt(canvas.offsetWidth) - parseInt(background.offsetWidth)) / 2    
     }
@@ -424,7 +654,7 @@ function openDoors(player) {
     for (var i = 0; i < elementsInteract.length; i++) {
         var element = elementsInteract[i];
         if (objectsAreInPosition(playerLocation, element)) {
-            if (element.name === 'door1' || element.name === 'door2' || element.name === 'door3' ||element.name === 'door4' && !element.lock) {
+            if (element.name === 'door1' || element.name === 'door2' || element.name === 'door3' ||element.name === 'door4' ||element.name === 'outDoor2' &&  !element.lock) {
                 //openThings.play();
                 document.getElementById(element.name).style.backgroundPosition = element.style;
             }
