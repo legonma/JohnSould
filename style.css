@@ -322,6 +322,24 @@ body {
     background-image: url('img/shotTable.png');
 }
 
+#doorInvisible {
+    background-color: rgba(155, 235, 59, 0);
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    width: 61px;
+    height: 137px;
+}
+
+#doorPoliceStation {
+    background-image: url('img/policeStationDoor.png');
+    display: flex;
+    align-self: flex-end;
+    position: absolute;
+    width: 86px;
+    height: 143px;
+}
+
 #outDoor {
     background-image: url('img/outDoor.png');
     display: flex;

@@ -9,28 +9,13 @@ var stage = [{
         },
         elementsUnderCharacter: [
             {
-                name: 'outDoor2',
+                name: 'doorInvisible',
                 positionX: 104,
                 levelOut: 5,
-                positionOut: 50,
+                positionOut: 130,
                 interact: true,
                 lock: false,
             },
-            {
-                name: 'door1',
-                positionX: 104,
-                levelOut: 5,
-                positionOut: 50,
-                interact: true,
-                lock: false,
-                styleStart: '0px',
-                style: '62px',
-                observation: [
-                    'Here sayd "ONLY PERSONAL"...',
-                    'I take all cases to personal, so...'
-                ]
-            },
-
             {
                 name: 'door1',
                 positionX: 522,
@@ -439,7 +424,17 @@ var stage = [{
             positionY: 448,
             interact: false,
         },
-            {
+        {
+            name: 'doorPoliceStation',
+            positionX: 144,
+            positionY: 241,
+            levelOut: 0,
+            positionOut: 104,
+            interact: true,
+            styleStart: '0px',
+            style: '86px',
+        },
+        {
             name: 'trash',
             positionX: 511,
             positionY: 367,
@@ -654,7 +649,7 @@ function openDoors(player) {
     for (var i = 0; i < elementsInteract.length; i++) {
         var element = elementsInteract[i];
         if (objectsAreInPosition(playerLocation, element)) {
-            if (element.name === 'door1' || element.name === 'door2' || element.name === 'door3' ||element.name === 'door4' ||element.name === 'outDoor2' &&  !element.lock) {
+            if (element.name === 'door1' || element.name === 'door2' || element.name === 'door3' || element.name === 'door4' || element.name === 'doorPoliceStation' &&  !element.lock) {
                 //openThings.play();
                 document.getElementById(element.name).style.backgroundPosition = element.style;
             }
