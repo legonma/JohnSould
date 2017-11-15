@@ -199,6 +199,12 @@ var stage = [{
                 interact: false,
             },
             {
+                name: 'policeMan',
+                positionX: 600,
+                positionY: 178,  
+                interact: false,
+            },
+            {
                 name: 'computer',
                 positionX: 105,
                 positionY: 220,                
@@ -562,7 +568,8 @@ function createElementBackground(scene) {
     canvas.appendChild(background);
     createElementWall(wall, scene);
     centerElementIn(background, canvas);
-    document.getElementById('textArea').style.top = (parseInt(background.style.top) + 220) + 'px';
+    var getBoundingBackground = background.getBoundingClientRect();
+    document.getElementById('textArea').style.top = getBoundingBackground.top + getBoundingBackground.height + 20 + 'px';
 }
 
 function createBasicElementAndAppendIn(basicElement, appendIn) {
@@ -733,7 +740,7 @@ function characterController(stage) {
                 var canvas = document.getElementById('canvas');
                 var background = document.getElementsByClassName('background')[0];
                 // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
-                var limitLeftBackground = ((canvas.offsetWidth - 167) - ((parseInt(background.offsetWidth))));
+                var limitLeftBackground = background.id === 'PoliceCityStation' ? ((canvas.offsetWidth) - ((parseInt(background.offsetWidth))))+10 : ((canvas.offsetWidth - 167) - ((parseInt(background.offsetWidth)))); 
                 if(background.offsetWidth > canvas.offsetWidth && parseInt(background.style.left) > limitLeftBackground) {
                     background.style.left = (parseInt(background.style.left) - 10) + 'px'; 
                 }
@@ -758,7 +765,7 @@ function characterController(stage) {
                 var canvas = document.getElementById('canvas');
                 var background = document.getElementsByClassName('background')[0];
                 // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
-                var limitLeftBackground = 167;
+                var limitLeftBackground = background.id === 'PoliceCityStation' ? 0: 167; 
                 if(background.offsetWidth > canvas.offsetWidth && parseInt(background.style.left) < limitLeftBackground) {
                     background.style.left = (parseInt(background.style.left) + 10) + 'px'; 
                 }                
