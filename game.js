@@ -1,5 +1,5 @@
 var stage = [{
-// ===========================  POLICE STATION FIRST LEVEL  ===============================  
+        // ===========================  POLICE STATION FIRST LEVEL  ===============================  
         // document.getElementById(element.name).getBoundingClientRect().left;   
         level: 0,
         scene: {
@@ -80,9 +80,6 @@ var stage = [{
                 interact: false,
             }
         ],
-        enemy: {
-            top: 60
-        },
         character: {
             top: 60
         },
@@ -102,7 +99,7 @@ var stage = [{
         },
     ]
     },
-// ===========================  POLICE STATION SECOND LEVEL  =============================== 
+    // ===========================  POLICE STATION SECOND LEVEL  =============================== 
     {
         level: 1,
         scene: {
@@ -173,7 +170,7 @@ var stage = [{
             top: 60
         }
     },
-// ===========================  POLICE STATION THIRD LEVEL BIG HALL =============================== 
+    // ===========================  POLICE STATION BIG HALL LEVEL  =============================== 
     {
         level: 2,
         scene: {
@@ -338,7 +335,7 @@ var stage = [{
             interact: false,
         }]
     },
-// ===========================  POLICE STATION FOUR LEVEL (SHOOT-ROOM)  =============================== 
+    // ===========================  POLICE STATION FOUR LEVEL (SHOOT-ROOM)  =============================== 
     {
         level: 3,
         scene: {
@@ -378,7 +375,7 @@ var stage = [{
             enemy: true
         }]
     },
-// ===========================  POLICE STATION OFFICE JOHN  =============================== 
+    // ===========================  OFFICE JOHN  =============================== 
     {
         level: 4,
         scene: {
@@ -418,7 +415,7 @@ var stage = [{
         },
         elementsOverCharacter: []
     },
-// ===========================  POLICE STATION OUTDOOR  =============================== 
+    // ===========================  PoliceStation out  =============================== 
     {
         level: 5,
         scene: {
@@ -548,9 +545,6 @@ function createScene(stage, level) {
                     createDomElement(stage[level][i][j]);
                 }
                 break;
-            case 'enemy': {
-                enemyController(stage[level], stage[level].enemy);
-            }
             default:
                 break;
         }
@@ -988,32 +982,5 @@ function shotingElements(player, lastLeyPressRight) {
                 papaeBoard.setAttribute('style', 'background-position: -' + (40 * element.damageRest) +'px 0px;');
             }
         }
-    }
-}
-
-
-//============================ ENEMY MOVEMENTS =========================
-function enemyController (stage, enemy) {
-    //random behaivor... 1:walk left     2:walk right     3:stay 
-        var randomBehaivor = Math.floor((Math.random() * 3) + 1);
-    //random setTimeConfig.... 
-        var randomSetTime = Math.floor((Math.random() * 3) + 1);
-
-    var spaceToWalk = document.getElementsByClassName('background')[0];
-    switch(behavior) {
-        case 1:
-            if(spaceToWalk.style.left < enemy.style.left) {
-                setInterval(function behaivor(){
-                    enemy.setAttribute('style', 'left: ' + (enemey.style.left + 10) + 'px');
-
-                }, randomSetTime *100);
-            }
-        break;
-        case 2:
-        break;
-        case 3:
-        break;
-        default:
-        break;
     }
 }
