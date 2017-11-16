@@ -1008,31 +1008,29 @@ function enemeyController () {
     var enemy = document.getElementById('enemyMirror');
     var randomBehaivor = Math.floor((Math.random() * 2) + 1);
     var countSteps = 1;
-
-    switch(randomBehaivor){
-        case 1:
-            var behaivor = setInterval(function (){
+    var steps = random(8, 150);
+    var direction = 1;
+    var behaivor = setInterval(function (){
+        switch(randomBehaivor){
+            case 1:
                 enemy.setAttribute('style', 'transform: scaleX(1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) + 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
-                countSteps === 6 ? countSteps = 1 : countSteps++;
-                if(parseInt(enemy.style.left) > random(8, 150)){
-                    clearInterval(behaivor);
-                    stayEnemy (1, enemy);                    
-                } 
-            }, 200);
-        break;
-        case 2:
-            var behaivor = setInterval(function (){
-                enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
-                countSteps === 6 ? countSteps = 1 : countSteps++;
-                if(parseInt(enemy.style.left) < random(8, 150)){
-                    clearInterval(behaivor);
-                    stayEnemy (-1, enemy);
-                } 
-            }, 200);
-        break;
-        default:
-        break;
-    }
+                direction = 1;
+            break;
+            case 2:
+                    enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
+                    direction = -1;
+            break;
+            default:
+            break;
+        }
+
+        countSteps === 6 ? countSteps = 1 : countSteps++;
+        randomBehaivor = Math.floor((Math.random() * 2) + 1);
+        if(parseInt(enemy.style.left) > steps){
+            clearInterval(behaivor);
+            stayEnemy (1, enemy);                    
+        } 
+    }, 200);
 }
 
 function stayEnemy (direction, enemy) {
@@ -1049,5 +1047,8 @@ function stayEnemy (direction, enemy) {
 }
 
 function random (num1, num){
-    return Math.floor((Math.random() * num1) + 1) * num;
+    var b = Math.floor((Math.random() * num1) + 1) * num;
+    console.log(b);
+    console.log(elementsInteract)
+    return b;
 }
