@@ -10,7 +10,7 @@ var stage = [{
         elementsUnderCharacter: [
             {
                 name: 'doorInvisible',
-                positionX: 104,
+                left: 104,
                 levelOut: 5,
                 positionOut: 130,
                 interact: true,
@@ -18,7 +18,7 @@ var stage = [{
             },
             {
                 name: 'door1',
-                positionX: 522,
+                left: 522,
                 levelOut: 1,
                 positionOut: 522,
                 interact: true,
@@ -32,7 +32,7 @@ var stage = [{
             },
             {
                 name: 'door4',
-                positionX: 606,
+                left: 606,
                 levelOut: 3,
                 positionOut: 500,
                 interact: true,
@@ -46,8 +46,8 @@ var stage = [{
             },
             {
                 name: 'deskOfficer',
-                positionX: 320,
-                positionY: 60,
+                left: 320,
+                top: 60,
                 interact: true,
                 observation: [
                     'This is a policeman...',
@@ -63,20 +63,20 @@ var stage = [{
             },
             {
                 name: 'board',
-                positionX: 60,
-                positionY: 50,
+                left: 60,
+                top: 50,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 170,
-                positionY: -3,
+                left: 170,
+                top: -3,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 380,
-                positionY: -3,
+                left: 380,
+                top: -3,
                 interact: false,
             }
         ],
@@ -85,13 +85,13 @@ var stage = [{
         },
         elementsOverCharacter: [{
             name: 'macetaAmarilla',
-            positionX: 0,
-            positionY: 110,
+            left: 0,
+            top: 110,
             interact: false,
         },
         {
             name: 'outDoor',
-            positionX: 104,
+            left: 104,
             levelOut: 5,
             positionOut: 50,
             interact: true,
@@ -109,7 +109,7 @@ var stage = [{
         },
         elementsUnderCharacter: [{
                 name: 'door2',
-                positionX: 522,
+                left: 522,
                 levelOut: 0,
                 positionOut: 522,
                 interact: true,
@@ -123,7 +123,7 @@ var stage = [{
             },
             {
                 name: 'door3',
-                positionX: 606,
+                left: 606,
                 levelOut: 2,
                 positionOut: 540,
                 interact: true,                
@@ -137,8 +137,8 @@ var stage = [{
             },
             {
                 name: 'atendedor',
-                positionX: 325,
-                positionY: 42,
+                left: 325,
+                top: 42,
                 interact: true,
                 observation: [
                     'This is a policeman...',
@@ -154,14 +154,14 @@ var stage = [{
             },
             {
                 name: 'greenSign',
-                positionX: 529,
-                positionY: 32,
+                left: 529,
+                top: 32,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 415,
-                positionY: -3,
+                left: 415,
+                top: -3,
                 interact: false,
             }
         ],
@@ -181,7 +181,7 @@ var stage = [{
         },
         elementsUnderCharacter: [{
                 name: 'door2',
-                positionX: 540,
+                left: 540,
                 levelOut: 1,
                 positionOut: 606,
                 interact: true,
@@ -195,120 +195,120 @@ var stage = [{
             },
             {
                 name: 'DeskComputer',
-                positionX: 10,
+                left: 10,
                 interact: false,
             },
             {
                 name: 'policeMan',
-                positionX: 600,
-                positionY: 178,  
+                left: 600,
+                top: 178,  
                 interact: false,
             },
             {
                 name: 'computer',
-                positionX: 105,
-                positionY: 220,                
+                left: 105,
+                top: 220,                
                 interact: false,
             },
             {
                 name: 'DeskChair',
-                positionX: 40,
+                left: 40,
                 interact: false,
             },
             {
                 name: 'clock',
-                positionX: 300,
-                positionY: 140,
+                left: 300,
+                top: 140,
                 interact: false,
             },
             {
                 name: 'PosterCop',
-                positionX: 50,
-                positionY: 160,
+                left: 50,
+                top: 160,
                 interact: false,
             },
             {
                 name: 'fileCabinetBox3',
-                positionX: 170,
+                left: 170,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox4',
-                positionX: 280,
+                left: 280,
                 hide: 'down',
             },
             {
                 name: 'fileCabinetBox5',
-                positionX: 390,
+                left: 390,
                 hide: 'up',
             },
             {
                 name: 'ventilador',
-                positionX: 160,
-                positionY: 116,
+                left: 160,
+                top: 116,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 420,
-                positionY: 116,
+                left: 420,
+                top: 116,
                 interact: false,
             },
             {
                 name: 'DeskComputer',
-                positionX: 1000,
+                left: 1000,
                 interact: false,
             },
             {
                 name: 'computer',
-                positionX: 1095,
-                positionY: 220,                
+                left: 1095,
+                top: 220,                
                 interact: false,
             },
             {
                 name: 'clock',
-                positionX: 1150,
-                positionY: 140,
+                left: 1150,
+                top: 140,
                 interact: false,
             },
             {
                 name: 'DeskComputer',
-                positionX: 1200,
+                left: 1200,
                 interact: false,
             },
             {
                 name: 'computer',
-                positionX: 1295,
-                positionY: 220,                
+                left: 1295,
+                top: 220,                
                 interact: false,
             },
             {
                 name: 'PosterCop',
-                positionX: 1000,
-                positionY: 160,
+                left: 1000,
+                top: 160,
                 interact: false,
             },
             {
                 name: 'posterBreaked',
-                positionX: 1200,
-                positionY: 190,
+                left: 1200,
+                top: 190,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 1010,
-                positionY: 116,
+                left: 1010,
+                top: 116,
                 interact: false,
             },
             {
                 name: 'ventilador',
-                positionX: 1220,
-                positionY: 116,
+                left: 1220,
+                top: 116,
                 interact: false,
             },
             {
                 name: 'door1',
-                positionX: 1400,
+                left: 1400,
                 levelOut: 4,
                 positionOut: 21,
                 interact: true,
@@ -325,13 +325,13 @@ var stage = [{
         },
         elementsOverCharacter: [{
             name: 'balcon',
-            positionX: 682,
-            positionY: 11,
+            left: 682,
+            top: 11,
             interact: false,
         },
         {
             name: 'DeskChair',
-            positionX: 1030,
+            left: 1030,
             interact: false,
         }]
     },
@@ -345,7 +345,7 @@ var stage = [{
         },
         elementsUnderCharacter: [{
                 name: 'door4',
-                positionX: 500,
+                left: 500,
                 levelOut: 0,
                 positionOut: 606,
                 interact: true,
@@ -358,18 +358,24 @@ var stage = [{
                 ]
             },
         ],
+        enemy: [{
+            name: 'enemyMirror',
+            life: 1,
+            top: 60,
+            left: 0
+        }],
         character: {
             top: 60
         },
         elementsOverCharacter: [{
             name: 'shotTable',
-            positionX: 343,
-            positionY: -6,
+            left: 343,
+            top: -6,
             interact: true,
         },
         {
             name: 'paperboardShot',
-            positionX: 0,
+            left: 0,
             damage: 6,
             damageRest: 0,
             enemy: true
@@ -385,7 +391,7 @@ var stage = [{
         },
         elementsUnderCharacter: [{
                 name: 'door1',
-                positionX: 34,
+                left: 34,
                 levelOut: 2,
                 positionOut: 1400,
                 interact: true,
@@ -399,14 +405,14 @@ var stage = [{
             },
             {
                 name: 'board2',
-                positionX: 130,
-                positionY: 50,
+                left: 130,
+                top: 50,
                 interact: false,
             },
             {
                 name: 'macetaChica',
-                positionX: 365,
-                positionY: 45,
+                left: 365,
+                top: 45,
                 interact: false,
             },
         ],
@@ -426,14 +432,14 @@ var stage = [{
         elementsUnderCharacter: [
         {
             name: 'alcantarilla',
-            positionX: 140,
-            positionY: 448,
+            left: 140,
+            top: 448,
             interact: false,
         },
         {
             name: 'doorPoliceStation',
-            positionX: 144,
-            positionY: 241,
+            left: 144,
+            top: 241,
             levelOut: 0,
             positionOut: 104,
             interact: true,
@@ -442,14 +448,14 @@ var stage = [{
         },
         {
             name: 'trash',
-            positionX: 511,
-            positionY: 367,
+            left: 511,
+            top: 367,
             interact: false,
         },
         {
             name: 'policeCar',
-            positionX: 576,
-            positionY: 334,
+            left: 576,
+            top: 334,
             interact: false,
         },
     ],
@@ -459,38 +465,38 @@ var stage = [{
         elementsOverCharacter: [
             {
                 name: 'lightPost',
-                positionX: 777,
-                positionY: 251,
+                left: 777,
+                top: 251,
                 interact: false,
             },
             {
                 name: 'subwayStation',
-                positionX: 1051,
-                positionY: 289,
+                left: 1051,
+                top: 289,
                 interact: false,
             },
             {
                 name: 'metalicWeb',
-                positionX: 1256,
-                positionY: 289,
+                left: 1256,
+                top: 289,
                 interact: false,
             },
             {
                 name: 'diaryBlack',
-                positionX: 0,
-                positionY: 457,
+                left: 0,
+                top: 457,
                 interact: false,
             },
             {
                 name: 'signBlack',
-                positionX: 380,
-                positionY: 372,
+                left: 380,
+                top: 372,
                 interact: false,
             },            
             {
                 name: 'lightBlack',
-                positionX: 890,
-                positionY: 362,
+                left: 890,
+                top: 362,
                 interact: false,
             }
         ]
@@ -501,6 +507,7 @@ var stage = [{
 // ============================== WINDOW ONLOAD =============================
 
 var enemysArePresent = [];
+var enemysInStage = [];
 var elementsInteract = [];
 var objetsToHide = [];
 var stopMoveEvent = false;
@@ -514,8 +521,9 @@ var qs;
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 var lastLeyPressRight = false;
 window.onload = function() {
-    createScene(stage, 0);
+    createScene(stage, 3);
     characterController(stage);
+    enemeyController()
 }
 
 
@@ -531,22 +539,27 @@ function createScene(stage, level) {
         switch (i) {
             case 'scene':
                 createElementBackground(stage[level].scene);
-                break;
+            break;
             case 'elementsOverCharacter':
                 for (var j = 0; j < stage[level][i].length; j++) {
                     createDomElement(stage[level][i][j]);
                 }
-                break;
+            break;
+            case 'enemy':
+                for (var j = 0; j < stage[level][i].length; j++) {
+                    createDomElement(stage[level][i][j]);
+                }
+            break;
             case 'character':
                 character(stage[level].character);
-                break;
+            break;
             case 'elementsUnderCharacter':
                 for (var j = 0; j < stage[level][i].length; j++) {
                     createDomElement(stage[level][i][j]);
                 }
-                break;
+            break;
             default:
-                break;
+            break;
         }
     }
 }
@@ -605,7 +618,7 @@ function centerElementIn(background, canvas) {
 function createDomElement(element) {
     var div = document.createElement('div');
     div.id = element.name;
-    div.style = 'left: ' + element.positionX + 'px; top: ' + element.positionY + 'px;';
+    div.style = 'left: ' + element.left + 'px; top: ' + element.top + 'px;';
     appendContentIn(div, 'level');
     var elementTemp = JSON.parse(JSON.stringify(element))
     if (element.interact) {
@@ -613,6 +626,9 @@ function createDomElement(element) {
     }
     if(element.enemy) {
         enemysArePresent.push(elementTemp);
+    }
+    if(element === 'enemy'){
+        enemysInStage.push(elementTemp);
     }
     if(element.hide != undefined) {
         objetsToHide.push(elementTemp)
@@ -631,7 +647,7 @@ function checkIfPlayerCanHide(player, playerSprite, direction) {
         var element = objetsToHide[i];
         if (objectsAreInPosition(playerLocation, element)) {
             positionHide = lastLeyPressRight ? 10 : parseInt(document.getElementById(element.name).offsetWidth) - 10 ;
-            player.setAttribute('style', 'left: '+ (element.positionX + positionHide) + 'px');
+            player.setAttribute('style', 'left: '+ (element.left + positionHide) + 'px');
             if(element.hide === 'down') {
                 playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[0] +' -360px');                
             } 
@@ -668,7 +684,7 @@ function openDoors(player) {
 }
 
 function objectsAreInPosition(playerLocation, element) {
-    var intervalStart = element.positionX;
+    var intervalStart = element.left;
     var intervalEnd = intervalStart + parseInt(document.getElementById(element.name).offsetWidth);
     return playerLocation >= intervalStart && playerLocation <= intervalEnd;
 }
@@ -974,7 +990,7 @@ function fireGun(player, playerSprite, lastLeyPressRight) {
 function shotingElements(player, lastLeyPressRight) {
     for (var i = 0; i < enemysArePresent.length; i++) {
         var element = enemysArePresent[i];
-        var aim = element.positionX > player.left ? true : false;
+        var aim = element.left > player.left ? true : false;
         if(lastLeyPressRight === aim){
             if (element.name === 'paperboardShot') {
                 element.damageRest === element.damage ? element.damageRest = 0 : element.damageRest ++;
@@ -983,4 +999,55 @@ function shotingElements(player, lastLeyPressRight) {
             }
         }
     }
+}
+
+//============================ ENEMY CONTROLLER =========================
+
+function enemeyController () {
+    var background = document.getElementsByClassName('background')[0];
+    var enemy = document.getElementById('enemyMirror');
+    var randomBehaivor = Math.floor((Math.random() * 2) + 1);
+    var countSteps = 1;
+
+    switch(randomBehaivor){
+        case 1:
+            var behaivor = setInterval(function (){
+                enemy.setAttribute('style', 'transform: scaleX(1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) + 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
+                countSteps === 6 ? countSteps = 1 : countSteps++;
+                if(parseInt(enemy.style.left) > random(8, 150)){
+                    clearInterval(behaivor);
+                    stayEnemy (1, enemy);                    
+                } 
+            }, 200);
+        break;
+        case 2:
+            var behaivor = setInterval(function (){
+                enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
+                countSteps === 6 ? countSteps = 1 : countSteps++;
+                if(parseInt(enemy.style.left) < random(8, 150)){
+                    clearInterval(behaivor);
+                    stayEnemy (-1, enemy);
+                } 
+            }, 200);
+        break;
+        default:
+        break;
+    }
+}
+
+function stayEnemy (direction, enemy) {
+    var count = 1;
+    var time = setInterval(function() {
+        var animation = 'animation: steyCharacterAnimation 2s steps(8) infinite;';
+        enemy.setAttribute('style', 'transform: scaleX(' + direction + ');' + animation + 'top: '+ enemy.style.top + ';left: ' + parseInt(enemy.style.left) + 'px;');
+        count ++;  
+        if(count === 20) {
+            enemeyController();
+            clearInterval(time); 
+        }
+    }, 300)
+}
+
+function random (num1, num){
+    return Math.floor((Math.random() * num1) + 1) * num;
 }
