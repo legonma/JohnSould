@@ -358,15 +358,15 @@ var stage = [{
                 ]
             },
         ],
+        character: {
+            top: 60
+        },
         enemy: [{
             name: 'enemyMirror',
             life: 1,
             top: 60,
             left: 0
         }],
-        character: {
-            top: 60
-        },
         elementsOverCharacter: [{
             name: 'shotTable',
             left: 343,
@@ -523,7 +523,7 @@ var lastLeyPressRight = false;
 window.onload = function() {
     createScene(stage, 3);
     characterController(stage);
-    enemeyController()
+    enemeyController()    
 }
 
 
@@ -1008,36 +1008,38 @@ function enemeyController () {
     var enemy = document.getElementById('enemyMirror');
     var randomBehaivor = Math.floor((Math.random() * 2) + 1);
     var countSteps = 1;
-    var steps = random(8, 150);
-    var direction = 1;
+    var steps = elementsInteract[Math.floor((Math.random() * 2))]; 
+    var enemyDirection = 1;
     var behaivor = setInterval(function (){
-        switch(randomBehaivor){
+        switch(1){
+            //Walk to an object.
             case 1:
-                enemy.setAttribute('style', 'transform: scaleX(1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) + 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
-                direction = 1;
-            break;
-            case 2:
-                    enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
-                    direction = -1;
+            if( parseInt(enemy.style.left) < (steps.left)) {
+                enemy.setAttribute('style', 'transform: scaleX(1); top: ' + enemy.style.top + ';left: ' + (parseInt(enemy.style.left) + 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
+                enemyDirection = 1;
+                } 
+            if( parseInt(enemy.style.left) > (steps.left)) {
+                enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
+                enemyDirection = -1;    
+            }
             break;
             default:
             break;
         }
-
         countSteps === 6 ? countSteps = 1 : countSteps++;
-        randomBehaivor = Math.floor((Math.random() * 2) + 1);
-        if(parseInt(enemy.style.left) > steps){
+        if((parseInt(enemy.style.left) - steps.left) === 0 || Math.abs(parseInt(enemy.style.left) - steps.left) < 10) {
             clearInterval(behaivor);
-            stayEnemy (1, enemy);                    
+            stayEnemy (enemyDirection, enemy);                    
+            
         } 
     }, 200);
 }
 
-function stayEnemy (direction, enemy) {
+function stayEnemy (enemyDirection, enemy) {
     var count = 1;
     var time = setInterval(function() {
         var animation = 'animation: steyCharacterAnimation 2s steps(8) infinite;';
-        enemy.setAttribute('style', 'transform: scaleX(' + direction + ');' + animation + 'top: '+ enemy.style.top + ';left: ' + parseInt(enemy.style.left) + 'px;');
+        enemy.setAttribute('style', 'transform: scaleX(' + enemyDirection + ');' + animation + 'top: '+ enemy.style.top + ';left: ' + parseInt(enemy.style.left) + 'px;');
         count ++;  
         if(count === 20) {
             enemeyController();
@@ -1046,9 +1048,11 @@ function stayEnemy (direction, enemy) {
     }, 300)
 }
 
-function random (num1, num){
-    var b = Math.floor((Math.random() * num1) + 1) * num;
-    console.log(b);
-    console.log(elementsInteract)
-    return b;
+function goToRandomElement (){
+    return Math.floor((Math.random() * elementsInteract.length) + 1);
+}
+
+function condition (enemy, steps){
+    var algo = (((parseInt(enemy.style.left) - steps.left) < 10) || ((parseInt(enemy.style.left) - steps.left) === 0));
+    console.log(algo)
 }
