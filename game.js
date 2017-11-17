@@ -1004,23 +1004,41 @@ function shotingElements(player, lastLeyPressRight) {
 //============================ ENEMY CONTROLLER =========================
 
 function enemeyController () {
+    var stopMoveEvent = false;
+    var withGun = false;
+    var pickUp = false;
     var background = document.getElementsByClassName('background')[0];
-    var enemy = document.getElementById('enemyMirror');
     var randomBehaivor = Math.floor((Math.random() * 2) + 1);
     var countSteps = 1;
     var steps = elementsInteract[Math.floor((Math.random() * 2))]; 
     var enemyDirection = 1;
     var behaivor = setInterval(function (){
+        var enemy = document.getElementById('enemyMirror');
+        var character = document.getElementById('characterBox');
+        if(!enemy){
+            clearInterval(behaivor)
+            return;
+        }
+        if(enemy.offsetLeft < character.offsetLeft && enemyDirection === 1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200)) {
+            stopMoveEvent = true;
+            pickupGun(enemy, withGun, stopMoveEvent) 
+        }
+        if(enemy.offsetLeft > character.offsetLeft && enemyDirection ===-1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200)) {
+            stopMoveEvent = true;
+            pickupGun(enemy, withGun, stopMoveEvent) 
+        }
         switch(1){
             //Walk to an object.
             case 1:
-            if( parseInt(enemy.style.left) < (steps.left)) {
-                enemy.setAttribute('style', 'transform: scaleX(1); top: ' + enemy.style.top + ';left: ' + (parseInt(enemy.style.left) + 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
-                enemyDirection = 1;
-                } 
-            if( parseInt(enemy.style.left) > (steps.left)) {
-                enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
-                enemyDirection = -1;    
+            if(!stopMoveEvent) {
+                if( parseInt(enemy.style.left) < (steps.left)) {
+                    enemy.setAttribute('style', 'transform: scaleX(1); top: ' + enemy.style.top + ';left: ' + (parseInt(enemy.style.left) + 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
+                    enemyDirection = 1;
+                    } 
+                if( parseInt(enemy.style.left) > (steps.left)) {
+                    enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
+                    enemyDirection = -1;    
+                }
             }
             break;
             default:
@@ -1033,26 +1051,56 @@ function enemeyController () {
             
         } 
     }, 200);
-}
 
-function stayEnemy (enemyDirection, enemy) {
-    var count = 1;
-    var time = setInterval(function() {
-        var animation = 'animation: steyCharacterAnimation 2s steps(8) infinite;';
-        enemy.setAttribute('style', 'transform: scaleX(' + enemyDirection + ');' + animation + 'top: '+ enemy.style.top + ';left: ' + parseInt(enemy.style.left) + 'px;');
-        count ++;  
-        if(count === 20) {
-            enemeyController();
-            clearInterval(time); 
+    function stayEnemy (enemyDirection, enemy) {
+        var count = 1;
+        var time = setInterval(function() {
+            var animation = 'animation: steyCharacterAnimation 2s steps(8) infinite;';
+            enemy.setAttribute('style', 'transform: scaleX(' + enemyDirection + ');' + animation + 'top: '+ enemy.style.top + ';left: ' + parseInt(enemy.style.left) + 'px;');
+            count ++;  
+            if(count === 20) {
+                enemeyController();
+                clearInterval(time); 
+            }
+        }, 300)
+    }
+    
+    function goToRandomElement (){
+        return Math.floor((Math.random() * elementsInteract.length) + 1);
+    }
+    
+    function condition (enemy, steps){
+        var algo = (((parseInt(enemy.style.left) - steps.left) < 10) || ((parseInt(enemy.style.left) - steps.left) === 0));
+        console.log(algo)
+    }
+
+    function pickupGun(enemy, withGun, stopMoveEvent) {
+        var pickUpFrame = 0;
+        if (!withGun) {
+            var pickUpInterval = setInterval(() => {
+                enemy.style.backgroundPosition = (-80 * pickUpFrame) + 'px -120px';
+                if (pickUpFrame === 3) {
+                    stopMoveEvent = false;
+                    withGun = true;
+                    clearInterval(pickUpInterval);
+                } else {
+                    pickUpFrame++;
+                }
+            }, 150);
+        } else {
+            pickUpFrame = 3;
+            var pickUpInterval = setInterval(() => {
+                enemy.style.backgroundPosition = (-80 * pickUpFrame) + 'px -120px';
+                if (!pickUpFrame) {
+                    stopMoveEvent = false;
+                    withGun = false;
+                    clearInterval(pickUpInterval);
+                } else {
+                    pickUpFrame--;
+                }
+            }, 150);
         }
-    }, 300)
-}
-
-function goToRandomElement (){
-    return Math.floor((Math.random() * elementsInteract.length) + 1);
-}
-
-function condition (enemy, steps){
-    var algo = (((parseInt(enemy.style.left) - steps.left) < 10) || ((parseInt(enemy.style.left) - steps.left) === 0));
-    console.log(algo)
+        //hacer la animacion del pickup Gun
+        pickupGun = !pickupGun;
+    }
 }
