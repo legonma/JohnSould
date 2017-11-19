@@ -323,6 +323,12 @@ var stage = [{
         ],
         character: {
         },
+        enemy: [{
+            name: 'enemyMirror',
+            life: 1,
+            top: 180,
+            left: 0
+        }],
         elementsOverCharacter: [{
             name: 'balcon',
             left: 682,
@@ -361,12 +367,6 @@ var stage = [{
         character: {
             top: 60
         },
-        enemy: [{
-            name: 'enemyMirror',
-            life: 1,
-            top: 60,
-            left: 0
-        }],
         elementsOverCharacter: [{
             name: 'shotTable',
             left: 343,
@@ -510,8 +510,10 @@ var enemysArePresent = [];
 var enemysInStage = [];
 var elementsInteract = [];
 var objetsToHide = [];
+var elementsInteractWithEnemy = [];
 var stopMoveEvent = false;
 var stopQuestionEvent = true;
+var characterHide = false;
 var pickupGun = false;
 var firstSteps;
 var secondSteps;
@@ -521,9 +523,8 @@ var qs;
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 var lastLeyPressRight = false;
 window.onload = function() {
-    createScene(stage, 3);
+    createScene(stage, 2);
     characterController(stage);
-    enemeyController()    
 }
 
 
@@ -548,6 +549,7 @@ function createScene(stage, level) {
             case 'enemy':
                 for (var j = 0; j < stage[level][i].length; j++) {
                     createDomElement(stage[level][i][j]);
+                    enemeyController()    
                 }
             break;
             case 'character':
@@ -623,6 +625,7 @@ function createDomElement(element) {
     var elementTemp = JSON.parse(JSON.stringify(element))
     if (element.interact) {
         elementsInteract.push(elementTemp);
+        elementsInteractWithEnemy.push(elementTemp);
     }
     if(element.enemy) {
         enemysArePresent.push(elementTemp);
@@ -632,6 +635,7 @@ function createDomElement(element) {
     }
     if(element.hide != undefined) {
         objetsToHide.push(elementTemp)
+        elementsInteractWithEnemy.push(elementTemp);
     }
 }
 
@@ -650,9 +654,11 @@ function checkIfPlayerCanHide(player, playerSprite, direction) {
             player.setAttribute('style', 'left: '+ (element.left + positionHide) + 'px');
             if(element.hide === 'down') {
                 playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[0] +' -360px');                
+                characterHide = true;
             } 
             if(element.hide === 'up') {
                 playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[8] +' -360px');
+                characterHide = true;
             }   
         }
     }
@@ -719,6 +725,7 @@ function characterController(stage) {
         var roomLimits = (parseInt(document.getElementById('level').style.width) - parseInt(getCssPlayer))
         if (j.key === 'ArrowRight' || j.key === 'ArrowLeft' || j.key === 'ArrowUp' && !stopMoveEvent) {
             var transform = player.style.transform;
+            characterHide = false;
             timmer = setTimeout(function() {
                 var direction = lastLeyPressRight ? '1' : '-1';
                 var animation = withGun ? 'background-position-y: -480px; animation: steyWithGunAnimation 2s steps(5) infinite;' : 'animation: steyCharacterAnimation 2s steps(8) infinite;';
@@ -1005,37 +1012,52 @@ function shotingElements(player, lastLeyPressRight) {
 
 function enemeyController () {
     var stopMoveEvent = false;
-    var withGun = false;
+    var gun = false;
     var pickUp = false;
     var background = document.getElementsByClassName('background')[0];
     var randomBehaivor = Math.floor((Math.random() * 2) + 1);
     var countSteps = 1;
-    var steps = elementsInteract[Math.floor((Math.random() * 2))]; 
+    var steps = elementsInteractWithEnemy[Math.floor((Math.random() * elementsInteractWithEnemy.length))]; 
+    console.log(elementsInteractWithEnemy.length)
     var enemyDirection = 1;
     var behaivor = setInterval(function (){
-        var enemy = document.getElementById('enemyMirror');
-        var character = document.getElementById('characterBox');
-        if(!enemy){
-            clearInterval(behaivor)
-            return;
+    var enemy = document.getElementById('enemyMirror');
+    var character = document.getElementById('characterBox');
+    if(!enemy){
+        clearInterval(behaivor)
+        return;
+    }
+        //take a gun ---------------------------------------------------------------
+        if(enemy.offsetLeft < character.offsetLeft && enemyDirection === 1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200) && !characterHide) {
+            console.log(characterHide)
+            if(!gun) {
+                stopMoveEvent = true;
+                takeGun(enemy, gun, stopMoveEvent)
+                gun = true; 
+            } else {
+                console.log('hacer algo')
+            }
         }
-        if(enemy.offsetLeft < character.offsetLeft && enemyDirection === 1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200)) {
-            stopMoveEvent = true;
-            pickupGun(enemy, withGun, stopMoveEvent) 
+        if(enemy.offsetLeft > character.offsetLeft && enemyDirection ===- 1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200) && !characterHide) {
+            if(!gun) {
+                stopMoveEvent = true;
+                takeGun(enemy, gun, stopMoveEvent)
+                gun = true; 
+            } else {
+                console.log('hacer algo')
+            }
         }
-        if(enemy.offsetLeft > character.offsetLeft && enemyDirection ===-1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200)) {
-            stopMoveEvent = true;
-            pickupGun(enemy, withGun, stopMoveEvent) 
-        }
+        // -------------------------------------------------------------------------
         switch(1){
             //Walk to an object.
             case 1:
+            console.log(steps)
             if(!stopMoveEvent) {
-                if( parseInt(enemy.style.left) < (steps.left)) {
+                if(parseInt(enemy.style.left) < (steps.left)) {
                     enemy.setAttribute('style', 'transform: scaleX(1); top: ' + enemy.style.top + ';left: ' + (parseInt(enemy.style.left) + 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
                     enemyDirection = 1;
                     } 
-                if( parseInt(enemy.style.left) > (steps.left)) {
+                if(parseInt(enemy.style.left) > (steps.left)) {
                     enemy.setAttribute('style', 'transform: scaleX(-1); top: '+ enemy.style.top + ';left: ' + (parseInt(enemy.style.left) - 10 ) + 'px; background-position: ' + (-80 + (-80 * countSteps)) + 'px -240px');
                     enemyDirection = -1;    
                 }
@@ -1054,53 +1076,34 @@ function enemeyController () {
 
     function stayEnemy (enemyDirection, enemy) {
         var count = 1;
-        var time = setInterval(function() {
-            var animation = 'animation: steyCharacterAnimation 2s steps(8) infinite;';
+        var stay = setInterval(function() {
+            var animation = 'animation: steyEnemyAnimation 2s steps(8) infinite;';
+            var enemy = document.getElementById('enemyMirror');
+            var character = document.getElementById('characterBox');
             enemy.setAttribute('style', 'transform: scaleX(' + enemyDirection + ');' + animation + 'top: '+ enemy.style.top + ';left: ' + parseInt(enemy.style.left) + 'px;');
             count ++;  
-            if(count === 20) {
-                enemeyController();
-                clearInterval(time); 
+            if(count === 20 || (!characterHide && (enemy.offsetLeft < character.offsetLeft) && (enemyDirection === 1) || (!characterHide && (enemy.offsetLeft > character.offsetLeft) && enemyDirection === -1))) {
+                enemy.style.animation = null;
+                clearInterval(stay);
+                enemeyController()
             }
         }, 300)
     }
     
     function goToRandomElement (){
-        return Math.floor((Math.random() * elementsInteract.length) + 1);
-    }
-    
-    function condition (enemy, steps){
-        var algo = (((parseInt(enemy.style.left) - steps.left) < 10) || ((parseInt(enemy.style.left) - steps.left) === 0));
-        console.log(algo)
+        return Math.floor((Math.random() * elementsInteractWithEnemy.length) + 1);
     }
 
-    function pickupGun(enemy, withGun, stopMoveEvent) {
+    function takeGun(enemy, gun, stopMoveEvent) {
         var pickUpFrame = 0;
-        if (!withGun) {
             var pickUpInterval = setInterval(() => {
                 enemy.style.backgroundPosition = (-80 * pickUpFrame) + 'px -120px';
                 if (pickUpFrame === 3) {
                     stopMoveEvent = false;
-                    withGun = true;
                     clearInterval(pickUpInterval);
                 } else {
                     pickUpFrame++;
                 }
             }, 150);
-        } else {
-            pickUpFrame = 3;
-            var pickUpInterval = setInterval(() => {
-                enemy.style.backgroundPosition = (-80 * pickUpFrame) + 'px -120px';
-                if (!pickUpFrame) {
-                    stopMoveEvent = false;
-                    withGun = false;
-                    clearInterval(pickUpInterval);
-                } else {
-                    pickUpFrame--;
-                }
-            }, 150);
-        }
-        //hacer la animacion del pickup Gun
-        pickupGun = !pickupGun;
     }
 }

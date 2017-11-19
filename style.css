@@ -444,6 +444,12 @@ body {
     }
 }
 
+@keyframes steyEnemyAnimation {
+    100% {
+        background-position-x: -640px
+    }    
+}
+
 @keyframes steyCharacterAnimation {
     100% {
         background-position-x: -640px
