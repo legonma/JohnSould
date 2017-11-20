@@ -130,7 +130,6 @@ function characterController(stage) {
                 if(!stopMoveEvent) {
                     var direction = lastLeyPressRight ? '1':'-1';
                     if(withGun){
-                        playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[8] +' -240px');            
                         checkIfPlayerCanHide(player, playerSprite, direction);
                     } else {
                         playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: -80px -240px')    
@@ -167,21 +166,22 @@ function characterController(stage) {
 
 
 function checkIfPlayerCanHide(player, playerSprite, direction) {
+    playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[8] +' -240px');    
     var playerLocation = parseInt(player.style.left);
     for (var i = 0; i < objetsToHide.length; i++) {
         var element = objetsToHide[i];
         if (objectsAreInPosition(playerLocation, element)) {
-            positionHide = lastLeyPressRight ? 10 : parseInt(document.getElementById(element.name).offsetWidth) - 10 ;
+            positionHide = lastLeyPressRight ? 10 : document.getElementById(element.name).offsetWidth - 10 ;
             player.setAttribute('style', 'left: '+ (element.left + positionHide) + 'px');
             if(element.hide === 'down') {
+                debugger;
                 playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[0] +' -360px');                
-                characterHide = true;
             } 
             if(element.hide === 'up') {
                 playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[8] +' -360px');
-                characterHide = true;
             }   
         }
+        characterHide = true;
     }
 }
 
@@ -209,7 +209,6 @@ function openDoors(player) {
         }
     }
 }
-
 
 //============================ FIRE MODE =========================
 
