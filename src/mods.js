@@ -31,6 +31,7 @@ function doorAction(element, stage) {
         characterPosition = element.positionOut;
         elementsInteract = [];
         enemysArePresent = [];
+        elementsInteractWithEnemy = [];
         removeElements('canvas');
         sceneConstructorController(stage, element.levelOut);
     }

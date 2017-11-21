@@ -8,7 +8,6 @@ function enemeyController () {
     var randomBehaivor = Math.floor((Math.random() * 2) + 1);
     var countSteps = 1;
     var steps = elementsInteractWithEnemy[Math.floor((Math.random() * elementsInteractWithEnemy.length))]; 
-    console.log(elementsInteractWithEnemy.length)
     var enemyDirection = 1;
     var behaivor = setInterval(function (){
     var enemy = document.getElementById('enemyMirror');
@@ -19,16 +18,18 @@ function enemeyController () {
     }
         //take a gun ---------------------------------------------------------------
         if(enemy.offsetLeft < character.offsetLeft && enemyDirection === 1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200) && !characterHide) {
-            console.log(characterHide)
+            //console.log(characterHide)
+            debugger;
             if(!gun) {
                 stopMoveEvent = true;
                 takeGun(enemy, gun, stopMoveEvent)
                 gun = true; 
             } else {
-                console.log('hacer algo')
+                clearInterval(behaivor);
+                modeCombat(enemyDirection);
             }
         }
-        if(enemy.offsetLeft > character.offsetLeft && enemyDirection ===- 1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200) && !characterHide) {
+        if(enemy.offsetLeft > character.offsetLeft && enemyDirection === -1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200) && !characterHide) {
             if(!gun) {
                 stopMoveEvent = true;
                 takeGun(enemy, gun, stopMoveEvent)
@@ -96,4 +97,47 @@ function enemeyController () {
                 }
             }, 150);
     }
+}
+
+function fire(enemy, enemyDirection) {
+    fireFrame = 0;
+    var pickUpInterval = setInterval(() => {
+        enemy.style.transform = 'scaleX(' + enemyDirection + ')';
+        enemy.style.backgroundPosition = (-320 + (-80 * fireFrame)) + 'px -120px';
+
+        if (fireFrame === 2) {
+            pistolShotSound.play(); 
+        }
+        if (fireFrame === 5) {
+            enemy.style.transform = 'scaleX(' + enemyDirection + ')';
+            enemy.style.backgroundPosition = (-320) + 'px -120px';
+            clipFall.play();
+            clearInterval(pickUpInterval);
+        } else {
+            fireFrame++;
+        }
+    }, 300);
+}
+
+function enemyHide(enemyDirection) {
+    var enemy = document.getElementById('enemyMirror');
+    enemy.style.transform = 'scaleX('+ enemyDirection +')';
+    enemy.style.backgroundPosition = '-640px -240px';    
+}
+
+function modeCombat(enemyDirection) {
+    var countFire = Math.floor(Math.random()*2)+1;
+    var combat = setInterval(() => {
+        var enemy = document.getElementById('enemyMirror');
+        var character = document.getElementById('characterBox');
+        if(enemy.offsetLeft < character.offsetLeft && enemyDirection === 1 && (Math.abs(enemy.offsetLeft - character.offsetLeft) < 200) && !characterHide) {
+            if(countFire){
+                fire(enemy, enemyDirection);
+                countFire--;        
+            }
+        } else { 
+            enemyHide(enemyDirection)
+            countFire = Math.floor(Math.random()*2)+1;
+        }
+    }, 2000);
 }

@@ -126,7 +126,7 @@ body {
     display: flex;
     align-self: center;
     left: -17px;
-    background-image: url('img/policeOfficeSpriteFinal.png');
+    background-image: url('img/characterSprite.png');
     background-repeat: no-repeat;
     background-position: 0px 0px;
 }
