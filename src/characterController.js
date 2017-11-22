@@ -100,7 +100,10 @@ function characterController(stage) {
                 stopMoveEvent = true;
                 if (!withGun) {
                     var pickUpInterval = setInterval(() => {
-                        playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (-80 * pickUpFrame) + 'px -120px');
+                        playerSprite.style.animation = null;
+                        playerSprite.style.transform = 'scaleX(' + lastLeyPressRight ? 1 : -1; + ')';
+                        playerSprite.style.backgroundPosition = (-80 * pickUpFrame) + 'px -120px';
+
                         if (pickUpFrame === 3) {
                             stopMoveEvent = false;
                             withGun = true;
@@ -112,7 +115,9 @@ function characterController(stage) {
                 } else {
                     pickUpFrame = 3;
                     var pickUpInterval = setInterval(() => {
-                        playerSprite.setAttribute('style', 'transform: scaleX(1); background-position: ' + (-80 * pickUpFrame) + 'px -120px');
+                        playerSprite.style.animation = null;
+                        playerSprite.style.transform = 'scaleX(' + lastLeyPressRight ? 1 : -1; + ')';
+                        playerSprite.style.backgroundPosition = (-80 * pickUpFrame) + 'px -120px';
                         if (!pickUpFrame) {
                             stopMoveEvent = false;
                             withGun = false;
@@ -174,7 +179,6 @@ function checkIfPlayerCanHide(player, playerSprite, direction) {
             positionHide = lastLeyPressRight ? 10 : document.getElementById(element.name).offsetWidth - 10 ;
             player.setAttribute('style', 'left: '+ (element.left + positionHide) + 'px');
             if(element.hide === 'down') {
-                debugger;
                 playerSprite.setAttribute('style', 'transform: scaleX('+ direction +'); background-position: ' + arrayToSetInt[0] +' -360px');                
             } 
             if(element.hide === 'up') {

@@ -323,6 +323,7 @@ var stage = [{
     },
     enemy: [{
         name: 'enemyMirror',
+        enemy: false,
         life: 1,
         top: 179,
         left: 0
@@ -376,7 +377,7 @@ var stage = [{
         left: 0,
         damage: 6,
         damageRest: 0,
-        enemy: true
+        paper: true
     }]
 },
 // ===========================  OFFICE JOHN  =============================== 

@@ -90,7 +90,7 @@ function createDomElement(element) {
         elementsInteract.push(elementTemp);
         elementsInteractWithEnemy.push(elementTemp);
     }
-    if(element.enemy) {
+    if(element.paper) {
         enemysArePresent.push(elementTemp);
     }
     if(element === 'enemy'){
