@@ -255,7 +255,11 @@ function shotingElements(player, lastLeyPressRight) {
 }
 
 function objectsAreInPosition(playerLocation, element) {
-    var intervalStart = element.left;
-    var intervalEnd = intervalStart + parseInt(document.getElementById(element.name).offsetWidth);
+    if(element.interactCanMove){
+        var intervalStart = document.getElementById(element.name).offsetLeft;
+    } else {
+        var intervalStart = element.left;
+    }
+    var intervalEnd = intervalStart + document.getElementById(element.name).offsetWidth;
     return playerLocation >= intervalStart && playerLocation <= intervalEnd;
 }

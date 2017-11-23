@@ -7,7 +7,7 @@ function questionMode() {
 }
 
 function defineActionWhenPressSpaceKey(player, stage) {
-    var playerPosition = parseInt(player.style.left);
+    var playerPosition = player.offsetLeft;
     for (i = 0; i < elementsInteract.length; i++) {
         var element = elementsInteract[i];
         if (objectsAreInPosition(playerPosition, element)) {
