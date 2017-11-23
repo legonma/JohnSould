@@ -51,11 +51,15 @@ function friendController () {
             stayEnemy (enemyDirection, friend);                    
             
         } 
-        function stayEnemy (enemyDirection, friend) {
+        function stayEnemy (enemyDirection) {
             var count = 1;
             var stay = setInterval(function() {
                 var animation = 'animation: steyEnemyAnimation 2s steps(8) infinite;';
                 var friend = document.getElementById('friendMirror');
+                if(!friend){
+                    clearInterval(stay)
+                    return;
+                }
                 var character = document.getElementById('characterBox');
                 friend.setAttribute('style', 'transform: scaleX(' + enemyDirection + ');' + animation + 'top: '+ friend.style.top + ';left: ' + parseInt(friend.style.left) + 'px;');
                 count ++;  
