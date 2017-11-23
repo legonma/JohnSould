@@ -15,6 +15,12 @@ function sceneConstructorController(stage, level) {
                     enemeyController()    
                 }
             break;
+            case 'friend':
+            for (var j = 0; j < stage[level][i].length; j++) {
+                createDomElement(stage[level][i][j]);
+                friendController()    
+            }
+            break;
             case 'character':
                 character(stage[level].character);
             break;

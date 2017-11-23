@@ -166,7 +166,19 @@ var stage = [{
 
     character: {
         top: 60
-    }
+    },
+    friend: [{
+        name: 'friendMirror',
+        interact: true,        
+        dialogs: [
+            'hi, im new here, my name is john where is my office',
+            'you are the same guy in the picture',
+            'where is the bathroom'
+        ],
+        life: 1,
+        top: 60,
+        left: 0
+    }]
 },
 // ===========================  POLICE STATION BIG HALL LEVEL  =============================== 
 {
