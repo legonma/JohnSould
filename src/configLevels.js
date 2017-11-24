@@ -511,5 +511,29 @@ var stage = [{
             interact: false,
         }
     ]
-},    
+},
+{
+    level: 6,
+    scene: {
+        width: 1852,
+        height: 593,
+        id: 'doctorHouse'
+    },
+
+    character: {
+        top: 261
+    }
+},
+{
+    level: 7,
+    scene: {
+        width: 780,
+        height: 641,
+        id: 'teslaDoc'
+    },
+
+    character: {
+        top: 261
+    }
+},     
 ]

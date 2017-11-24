@@ -16,6 +16,6 @@ var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px',
 var lastLeyPressRight = false;
 
 window.onload = function() {
-    sceneConstructorController(stage, 1);
+    sceneConstructorController(stage, 6);
     characterController(stage);
 }

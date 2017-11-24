@@ -68,6 +68,18 @@ body {
     height: 552px;
 }
 
+#teslaDoc {
+    background-image: url('img/teslaDoc.png');
+    width: 780px;
+    height: 641px;
+}
+
+#doctorHouse {
+    background-image: url('img/doctorHouse.png');
+    width: 1852px;
+    height: 593px;
+}
+
 #policeCar {
     background-image: url('img/policeCar.png');
     width: 115px;
