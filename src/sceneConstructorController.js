@@ -77,7 +77,9 @@ function createElementWall(wall, scene) {
 function centerElementIn(background, canvas) {
     var newLeft;
     if(background.offsetWidth > canvas.offsetWidth) {
-        background.id === 'PoliceCityStation' ? newLeft = 0 : newLeft = 167;
+        for(var i = 0; i < bigOutScenes.length; i++ ){
+            background.id === bigOutScenes[i] ? newLeft = 0 : newLeft = 167;
+        }
     } else {
         newLeft = (canvas.offsetWidth - background.offsetWidth) / 2    
     }

@@ -12,10 +12,11 @@ var secondSteps;
 var characterPosition = 0;
 var allQuestions = [];
 var qs;
+var bigOutScenes = ['PoliceCityStation', 'doctorHouse']
 var arrayToSetInt = ['0px','-80px','-160px','-240px','-320px','-400px','-480px','-560px','-640px','-720px'];
 var lastLeyPressRight = false;
 
 window.onload = function() {
-    sceneConstructorController(stage, 6);
+    sceneConstructorController(stage, 0);
     characterController(stage);
 }
