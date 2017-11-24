@@ -51,7 +51,7 @@ function characterController(stage) {
                 var canvas = document.getElementById('canvas');
                 var background = document.getElementsByClassName('background')[0];
                 // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
-                var limitLeftBackground = background.id === 'doctorHouse' ? ((canvas.offsetWidth) - ((parseInt(background.offsetWidth))))+10 : ((canvas.offsetWidth - 167) - ((parseInt(background.offsetWidth)))); 
+                var limitLeftBackground = background.id === 'PoliceCityStation' ? ((canvas.offsetWidth) - ((parseInt(background.offsetWidth))))+10 : ((canvas.offsetWidth - 167) - ((parseInt(background.offsetWidth)))); 
                 if(background.offsetWidth > canvas.offsetWidth && parseInt(background.style.left) > limitLeftBackground) {
                     background.style.left = (parseInt(background.style.left) - 10) + 'px'; 
                 }
@@ -76,7 +76,7 @@ function characterController(stage) {
                 var canvas = document.getElementById('canvas');
                 var background = document.getElementsByClassName('background')[0];
                 // para pantallas grandes, limito el margen a 167 de cada lado. el doble es para contrarestar el anterior.
-                var limitLeftBackground = background.id === 'doctorHouse' ? 0: 167; 
+                var limitLeftBackground = background.id === 'PoliceCityStation' ? 0: 167; 
                 if(background.offsetWidth > canvas.offsetWidth && parseInt(background.style.left) < limitLeftBackground) {
                     background.style.left = (parseInt(background.style.left) + 10) + 'px'; 
                 }                
